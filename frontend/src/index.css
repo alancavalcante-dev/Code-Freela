@@ -1,0 +1,246 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: white;
+}
+
+
+.flex-authentication {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #4caf50, #a1e6f8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container-authentication {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #1a7e1a;
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #43a047;
+}
+
+a {
+  color: #098f0e;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  background: #eaf6ed;
+  background: linear-gradient(135deg, #e9fae9, #f1fcff);
+  box-shadow: 3px 3px 3px 7px rgba(0, 0, 0, 0.018);
+  padding: 1.5rem;
+  border-right: 1px solid #b2dab2;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar a {
+  margin: 0;
+}
+
+
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.profile-icon {
+  font-size: 2rem;
+}
+
+.profile-center {
+  text-align: center;
+}
+
+.profile-info ul,
+.menu-section ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.profile-info li,
+.menu-section li {
+  cursor: pointer;
+  color: #1a7e1a;
+  margin-bottom: 0rem;
+}
+
+.filter-section label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-section input {
+  width: 15px;
+  height: 15px;
+}
+
+/* <label><input type="checkbox" /> JavaScript</label><br /> */
+
+
+
+
+
+
+
+
+
+.portfolio-page {
+  width: 100%;
+}
+
+
+
+
+.portfolio-page h1 {
+  color: #1a7e1a;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.projects-flex {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 25px;
+}
+
+.project-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.131);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  max-width: 230px;
+  height: 386px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-card img {
+  width: 100%;
+  height: 130px; /* <-- fixo */
+  object-fit: cover;
+  display: block;
+}
+
+.project-content {
+  height: 220px;
+  padding: 1.0rem;
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-content h2 {
+  color: #1a7e1a;
+  font-size: 15px;
+  margin: 0;
+}
+
+.project-content p {
+  color: #444;
+  font-size: 13px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-badge {
+  background-color: #e8f5e9;
+  color: #1a7e1a;
+  padding: 0.3rem 0.4rem;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.view-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-button:hover {
+  background-color: #388e3c;
+}
