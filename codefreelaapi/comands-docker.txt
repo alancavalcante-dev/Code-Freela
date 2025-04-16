@@ -3,3 +3,11 @@ docker run --name codefreela -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=post
 
 # Rodar PgAdmin4
 docker run --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin -p 15432:80 --network library-network  dpage/pgadmin4
+
+# Rodar container spring boot
+docker build -t minha-app-spring .
+docker run -p 8080:8080 -e GOOGLE_CLIENT_ID= -e GOOGLE_CLIENT_SECRET=  minha-app-spring
+
+# Rodar container frontend
+docker build -t meu-react-app .
+docker run -p 5173:5173 meu-react-app
