@@ -5,9 +5,9 @@ spring:
     ansi:
       enabled: ALWAYS
   datasource:
-    url: jdbc:postgresql://localhost:5434/codefreeladb
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${URL_BD}/codefreeladb
+    username: ${USERNAME_BD}
+    password: ${PASSWORD_BD}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true

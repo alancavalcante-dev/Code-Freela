@@ -1,0 +1,45 @@
+services:
+
+  db:
+    container_name: codefreela-db
+    image: postgres:16.3
+    networks:
+      - codefreela-network 
+    env_file:
+      - .env.database
+    ports:
+      - 5434:5432
+
+
+  api:
+    container_name: codefreela-api
+    build: 
+      context: ./codefreelaapi
+    env_file:
+      - .env.api
+    depends_on:
+      - db
+    networks:
+      - codefreela-network 
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+  
+  app:
+    container_name: codefreela-client
+    build: 
+      context: ./frontend
+    networks:
+      - codefreela-network 
+    env_file:
+      - .env.app
+    ports:
+      - 5173:5173
+    expose:
+      - 5173
+
+networks:
+  codefreela-network:
+    driver: bridge
+  
