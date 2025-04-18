@@ -9,7 +9,9 @@ import io.github.alancavalcante_dev.codefreelaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +27,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Component
 @EnableWebSecurity
@@ -37,6 +44,7 @@ public class SecurityConfiguration {
             HttpSecurity httpSecurity,
             LoginSocialSuccessHandler loginSuccessHandlerCustom) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults()) // ATIVAR CORS usando o Bean abaixo
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults()) // autenticação via aplicações
                 .formLogin(formConfig -> { // autenticação via browser
@@ -44,7 +52,8 @@ public class SecurityConfiguration {
                 })
                 .authorizeHttpRequests(authorize -> { // configurações de rotas e permissões
                     authorize.requestMatchers("/login/**").permitAll();
-                    authorize.requestMatchers(HttpMethod.POST, "api/users/**").permitAll(); // registro de usuario
+                    authorize.requestMatchers("/api/auth/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/users/**").permitAll(); // registro de usuario
 //                    authorize.requestMatchers("/**").hasRole("ADMIN");
                     authorize.anyRequest().authenticated();
                 })
@@ -55,6 +64,22 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(oauth2RS -> oauth2RS.jwt(Customizer.withDefaults()))
                 .addFilterAfter(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://codefreela-client:5173"
+        ));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
 
@@ -94,4 +119,10 @@ public class SecurityConfiguration {
 
         return converter;
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
 }

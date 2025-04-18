@@ -35,3 +35,7 @@ management:
 
 springdoc:
   override-with-generic-response: false
+
+
+jwt:
+  secret: ${JWT_SECRET}

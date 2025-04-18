@@ -43,7 +43,6 @@ public class UserController {
     @Operation(summary = "Cadastra um usuário")
     public ResponseEntity<UserResponseDTO> registroDeUsuario(@RequestBody @Valid UserRequestDTO userDTO) {
         User user = mapper.requestToEntity(userDTO);
-        user.setPassword(encoder.encode(userDTO.getPassword()));
         User userSave = service.save(user);
         return ResponseEntity.ok(mapper.entityToResponse(userSave));
     }
