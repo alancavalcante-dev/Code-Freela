@@ -16,13 +16,4 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
-
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/api/auth/**") // prefixo correto da sua API
-//                .allowedOrigins("http://localhost:5173", "http://codefreela-client:5173")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                .allowedHeaders("*")
-//                .allowCredentials(true);
-//    }
 }

@@ -49,9 +49,9 @@ public class Profile {
     @JoinColumn(name = "id_address")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_user")
-    private User user;
+//    @OneToOne(cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "id_user")
+//    private User user;
 
 //    @OneToMany
 //    private List<BusinessProject> businessProject;

@@ -9,7 +9,6 @@ import io.github.alancavalcante_dev.codefreelaapi.model.BusinessProject;
 import io.github.alancavalcante_dev.codefreelaapi.service.BusinessProjectService;
 import io.github.alancavalcante_dev.codefreelaapi.specifications.BusinessProjectSpecification;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

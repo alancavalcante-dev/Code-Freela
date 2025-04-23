@@ -1,39 +1,66 @@
 package io.github.alancavalcante_dev.codefreelaapi.model;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import lombok.Data;
-import org.hibernate.annotations.Type;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
-@Entity
-@Table(name = "tbl_user")
-@Data
-public class User {
-
+@Table(name = "users")
+@Entity(name = "users")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_user", unique = true)
-    private UUID idUser;
-
-    @Column(length = 100, nullable = false, unique = true)
-    private String username;
-
-    @Column(length = 254, nullable = false)
+    private String id;
+    private String login;
     private String password;
+    private UserRole role;
 
-    @Email
-    @Column(nullable = false, length = 100)
-    private String email;
+    public User(String login, String password, UserRole role){
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
-    @Column(name = "roles", columnDefinition = "varchar[]")
-    @Type(ListArrayType.class)
-    List<String> roles;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    @Override
+    public String getUsername() {
+        return login;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
+
