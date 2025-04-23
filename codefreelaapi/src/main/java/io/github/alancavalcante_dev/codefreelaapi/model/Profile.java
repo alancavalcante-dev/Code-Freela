@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -45,18 +44,19 @@ public class Profile {
     @LastModifiedDate
     private LocalDateTime dateLastModify;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_address")
     private Address address;
 
-//    @OneToOne(cascade = CascadeType.REMOVE)
-//    @JoinColumn(name = "id_user")
-//    private User user;
-
-//    @OneToMany
-//    private List<BusinessProject> businessProject;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_user")
+    private User user;
 
     private BigDecimal balance;
+
+
+    //    @OneToMany
+//    private List<BusinessProject> businessProject;
 
 //    @OneToMany(mappedBy = "profilePayer")
 //    private List<Transactions> transactionsSent;

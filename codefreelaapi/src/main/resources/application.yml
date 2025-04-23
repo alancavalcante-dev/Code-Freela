@@ -15,14 +15,6 @@ spring:
       ddl-auto: update
     properties:
       hibernate.format_sql: true
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id: ${GOOGLE_CLIENT_ID}
-#            client-secret: ${GOOGLE_CLIENT_SECRET}
-
 
 management:
   server:
@@ -32,10 +24,8 @@ management:
       exposure:
         include: '*'
 
-
 springdoc:
   override-with-generic-response: false
-
 
 jwt:
   secret: ${JWT_SECRET}

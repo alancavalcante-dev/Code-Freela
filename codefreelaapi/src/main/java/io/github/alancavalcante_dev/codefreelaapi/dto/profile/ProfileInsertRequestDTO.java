@@ -2,7 +2,6 @@ package io.github.alancavalcante_dev.codefreelaapi.dto.profile;
 
 
 import io.github.alancavalcante_dev.codefreelaapi.dto.AddressDTO;
-import io.github.alancavalcante_dev.codefreelaapi.dto.user.UserRequestDTO;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +33,5 @@ public class ProfileInsertRequestDTO {
     boolean isPj;
 
     AddressDTO address;
-    UserRequestDTO user;
 
 }

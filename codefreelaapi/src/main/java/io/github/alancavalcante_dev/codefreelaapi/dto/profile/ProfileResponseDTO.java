@@ -1,7 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.dto.profile;
 
 import io.github.alancavalcante_dev.codefreelaapi.dto.AddressDTO;
-import io.github.alancavalcante_dev.codefreelaapi.dto.user.UserResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +17,4 @@ public class ProfileResponseDTO {
     String cpf;
     boolean isPj;
     AddressDTO address;
-    UserResponseDTO user;
 }

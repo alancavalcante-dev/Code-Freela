@@ -1,7 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.dto.profile;
 
 import io.github.alancavalcante_dev.codefreelaapi.dto.AddressDTO;
-import io.github.alancavalcante_dev.codefreelaapi.dto.user.UserRequestDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,5 +35,4 @@ public class ProfileUpdateRequestDTO {
     boolean isPj;
 
     AddressDTO address;
-    UserRequestDTO user;
 }

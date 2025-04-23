@@ -3,12 +3,15 @@ package io.github.alancavalcante_dev.codefreelaapi.service;
 
 import io.github.alancavalcante_dev.codefreelaapi.model.Address;
 import io.github.alancavalcante_dev.codefreelaapi.model.Profile;
+import io.github.alancavalcante_dev.codefreelaapi.model.User;
 import io.github.alancavalcante_dev.codefreelaapi.repository.AddressRepository;
 import io.github.alancavalcante_dev.codefreelaapi.repository.ProfileRepository;
 import io.github.alancavalcante_dev.codefreelaapi.repository.UserRepository;
+import io.github.alancavalcante_dev.codefreelaapi.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.validate.ProfileValidate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,28 +19,37 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Service
-//@RequiredArgsConstructor
-//public class ProfileService {
-//
-//    private final ProfileRepository repository;
-//    private final UserRepository userRepository;
-//    private final AddressRepository addressRepository;
-//
+@Service
+@RequiredArgsConstructor
+public class ProfileService {
+
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
+
 //    private final UserValidate userValidate;
-//    private final ProfileValidate profileValidate;
-//
-//
-//    public List<Profile> getAllProfiles() {
-//        return repository.findAll();
-//    }
-//
-//    public Optional<Profile> getByIdProfile(UUID uuid) { return repository.findById(uuid);}
-//
-//    public void delete(Profile profile){
-//        repository.delete(profile);
-//    }
-//
+    private final ProfileValidate profileValidate;
+
+
+    public List<Profile> getAllProfiles() {
+        return profileRepository.findAll();
+    }
+
+    public Optional<Profile> getByIdProfile(UUID uuid) { return profileRepository.findById(uuid);}
+
+    public void delete(Profile profile){
+        profileRepository.delete(profile);
+    }
+
+
+    @Transactional
+    public Profile save(Profile profile) {
+        User userLogged = UserLogged.load();
+        profile.setUser(userLogged);
+        profile.setBalance(BigDecimal.valueOf(0.0));
+        return profileRepository.save(profile);
+    }
+
 //    @Transactional
 //    public Profile update(Profile profile , User userEntity, Address addressEntity) {
 //        userValidate.update(profile.getUser());
@@ -76,21 +88,9 @@ import java.util.UUID;
 //        profile.setAddress(addressProfile);
 //        return repository.save(profile);
 //    }
-//
-//
-//
-//    @Transactional
-//    public Profile save(Profile profile) {
-//        userValidate.save(profile.getUser());
-//        profileValidate.save(profile);
-//
-//        profile.setBalance(BigDecimal.valueOf(0.0));
-//        User userSave = userRepository.save(profile.getUser());
-//        Address addressSave = addressRepository.save(profile.getAddress());
-//
-//        profile.setUser(userSave);
-//        profile.setAddress(addressSave);
-//        return repository.save(profile);
-//    }
-//}
+
+
+
+
+}
 

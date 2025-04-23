@@ -1,5 +1,8 @@
 package io.github.alancavalcante_dev.codefreelaapi.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.dto.user.AuthenticationDTO;
+import io.github.alancavalcante_dev.codefreelaapi.dto.user.LoginResponseDTO;
+import io.github.alancavalcante_dev.codefreelaapi.dto.user.RegisterDTO;
 import io.github.alancavalcante_dev.codefreelaapi.model.*;
 import io.github.alancavalcante_dev.codefreelaapi.repository.UserRepository;
 import io.github.alancavalcante_dev.codefreelaapi.security.TokenService;
@@ -45,12 +48,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
+
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, UserRole.USER);
+        User newUser = new User(data.login(), encryptedPassword, UserRole.ADMIN);
 
         this.repository.save(newUser);
 
