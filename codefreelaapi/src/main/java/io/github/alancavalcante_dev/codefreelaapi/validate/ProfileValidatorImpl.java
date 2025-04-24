@@ -10,13 +10,15 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class ProfileValidate {
+public class ProfileValidatorImpl implements Validate<Profile> {
+
 
     @Autowired
     private ProfileRepository repository;
 
-    public void save(Profile profile) {
 
+    @Override
+    public void validate(Profile profile) {
         Optional<Profile> profileOptionalEmail = repository.findByEmail(profile.getEmail());
         if (profileOptionalEmail.isPresent()) {
             throw new EmailExistsException("Já existe um perfil com esse Email no nosso sistema!");
@@ -26,7 +28,5 @@ public class ProfileValidate {
         if (profileOptionalCpf.isPresent()) {
             throw new CpfExistsException("Já existe um perfil com esse CPF no nosso sistema!");
         }
-
     }
-
 }

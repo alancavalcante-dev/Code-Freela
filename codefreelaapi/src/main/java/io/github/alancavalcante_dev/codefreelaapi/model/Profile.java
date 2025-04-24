@@ -44,7 +44,7 @@ public class Profile {
     @LastModifiedDate
     private LocalDateTime dateLastModify;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address")
     private Address address;
 
