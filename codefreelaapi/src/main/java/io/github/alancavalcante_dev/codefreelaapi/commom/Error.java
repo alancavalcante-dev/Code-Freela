@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.commom;
 
-import io.github.alancavalcante_dev.codefreelaapi.dto.GlobalExceptionDTO;
+import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.GlobalExceptionDTO;
 
 import java.util.List;
 

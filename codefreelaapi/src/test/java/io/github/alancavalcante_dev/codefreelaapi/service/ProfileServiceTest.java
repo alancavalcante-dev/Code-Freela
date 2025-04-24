@@ -1,16 +1,5 @@
 package io.github.alancavalcante_dev.codefreelaapi.service;
 
-import io.github.alancavalcante_dev.codefreelaapi.model.Profile;
-import io.github.alancavalcante_dev.codefreelaapi.repository.ProfileRepository;
-import io.github.alancavalcante_dev.codefreelaapi.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
-import java.util.UUID;
-
 //@SpringBootTest
 //public class ProfileServiceTest {
 //
