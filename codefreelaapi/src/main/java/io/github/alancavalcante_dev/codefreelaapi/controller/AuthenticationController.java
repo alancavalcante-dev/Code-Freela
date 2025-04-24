@@ -3,10 +3,12 @@ package io.github.alancavalcante_dev.codefreelaapi.controller;
 import io.github.alancavalcante_dev.codefreelaapi.dto.user.AuthenticationDTO;
 import io.github.alancavalcante_dev.codefreelaapi.dto.user.LoginResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.dto.user.RegisterDTO;
+import io.github.alancavalcante_dev.codefreelaapi.exceptions.UsernameDuplicadoExeption;
 import io.github.alancavalcante_dev.codefreelaapi.model.*;
 import io.github.alancavalcante_dev.codefreelaapi.repository.UserRepository;
 import io.github.alancavalcante_dev.codefreelaapi.security.TokenService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,16 +21,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserRepository repository;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenService tokenService;
+    private final UserRepository repository;
+
+    private final TokenService tokenService;
+
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
@@ -51,12 +53,14 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if (repository.findByLogin(data.login()) != null) {
+            throw new UsernameDuplicadoExeption("Esse username já esta sendo usado, tente outro!");
+        }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, UserRole.USER);
 
-        this.repository.save(newUser);
+        repository.save(newUser);
 
         return ResponseEntity.ok().build();
     }
