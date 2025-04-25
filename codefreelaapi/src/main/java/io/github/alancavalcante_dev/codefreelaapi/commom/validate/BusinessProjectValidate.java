@@ -3,7 +3,7 @@ package io.github.alancavalcante_dev.codefreelaapi.commom.validate;
 
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.CurrentDateGreaterThanProjectDate;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.SomeValueMustBeFilled;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.BusinessProject;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Component
 public class BusinessProjectValidate {
 
-    public void fieldsPrice(BusinessProject project) {
+    public void fieldsPrice(Project project) {
         BigDecimal priceDay = project.getPriceDay() != null ? project.getPriceDay() : BigDecimal.ZERO;
         BigDecimal priceHour = project.getPriceHour() != null ? project.getPriceHour() : BigDecimal.ZERO;
         BigDecimal priceProject = project.getPriceProject() != null ? project.getPriceProject() : BigDecimal.ZERO;
@@ -38,7 +38,7 @@ public class BusinessProjectValidate {
         }
     }
 
-    public void save(BusinessProject project) {
+    public void save(Project project) {
         this.fieldsPrice(project);
         this.verifyFieldDateClosing(project.getClosingDate());
     }

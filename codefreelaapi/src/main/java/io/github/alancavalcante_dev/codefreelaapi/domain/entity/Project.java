@@ -1,15 +1,27 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
+
+import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
+import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.StateBusiness;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 
 @Entity
 @Data
 @Table(name = "tbl_project")
+@EqualsAndHashCode(of = "idProject")
+@ToString
+@EntityListeners(AuditingEntityListener.class)
 public class Project {
 
     @Id
@@ -17,26 +29,37 @@ public class Project {
     @Column(name = "id_project")
     private UUID idProject;
 
-    @OneToOne(mappedBy = "project", optional = false)
-    @JoinColumn(name = "id_bussines_project", nullable = false)
-    private BusinessProject idBusinessProject;
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
 
-    @Column(name = "title", length = 50, nullable = false)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private List<ProjectBusiness> projectBusinesses = new ArrayList<>();
+
+    @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @Column(name = "description", length = 50, nullable = false)
+    @Column(name = "description", length = 100, nullable = false)
     private String description;
 
-    @Column(name = "date_last_deploy")
-    private LocalDateTime dateLastDeploy;
+    @Column(name = "price_day", precision = 8, scale = 2)
+    private BigDecimal priceDay;
 
-    @Column(name = "date_closing")
-    private LocalDateTime dateClosing;
+    @Column(name = "price_hour", precision = 8, scale = 2)
+    private BigDecimal priceHour;
 
-    // business
-    @Column(name = "date_starting")
-    private LocalDateTime dateStarting;
+    @Column(name = "price_project", precision = 8, scale = 2)
+    private BigDecimal priceProject;
 
-    @Column(name = "date_ending")
-    private LocalDateTime dateEnding;
+    @Column(name = "closing_date")
+    private LocalDate closingDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private StateBusiness stateBusiness;
+
+    @CreatedDate
+    @Column(name = "date_created")
+    private LocalDate dateCreated;
+
 }

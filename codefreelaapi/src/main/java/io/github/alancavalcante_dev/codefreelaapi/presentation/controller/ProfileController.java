@@ -60,7 +60,7 @@ public class ProfileController {
     @PostMapping("me")
     @Operation(summary = "Cadastra um perfil")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ProfileInsertRequestDTO> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
+    public ResponseEntity<Void> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
         Profile entity = mapper.toEntity(profile);
         service.register(entity);
 
