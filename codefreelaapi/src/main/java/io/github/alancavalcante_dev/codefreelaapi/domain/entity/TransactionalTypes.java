@@ -1,4 +1,4 @@
-package io.github.alancavalcante_dev.codefreelaapi.presentation.dto;
+package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 public enum TransactionalTypes {
 

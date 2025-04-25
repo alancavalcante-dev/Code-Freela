@@ -29,13 +29,13 @@ public class ProjectBusiness {
 
     @ManyToOne
     @JoinColumn(name = "id_developer")
-    private User userDev;
+    private User userDeveloper;
 
 
     @Column(name = "confirm_client")
     private boolean confirmClient;
 
     @Column(name = "confirm_developer")
-    private boolean confirmDev;
+    private boolean confirmDeveloper;
 
 }

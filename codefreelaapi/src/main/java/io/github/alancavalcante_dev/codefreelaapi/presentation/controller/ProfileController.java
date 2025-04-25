@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/profiles")
+@RequestMapping("api")
 @RequiredArgsConstructor
 @Tag(name = "Perfil de usuário")
 public class ProfileController {
@@ -32,7 +32,7 @@ public class ProfileController {
     private final ProfileMapper mapper;
 
 
-    @GetMapping
+    @GetMapping("admin/projects")
     @Operation(summary = "Pega todos os perfis")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProfileResponseDTO>> getAllProfile() {
@@ -46,8 +46,19 @@ public class ProfileController {
         return ResponseEntity.ok(listProfileClientDTO);
     }
 
+    @DeleteMapping("admin/projects/{id}")
+    @Operation(summary = "Deleta um perfil")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Object> deleteProfile(@PathVariable("id") String id) {
+        return service.getByIdProfile(UUID.fromString(id))
+                .map(p -> {
+                    service.delete(p);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-    @GetMapping("me")
+
+    @GetMapping("users/me")
     @Operation(summary = "Consulta o próprio perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ProfileResponseDTO> getMyProfile() {
@@ -57,7 +68,7 @@ public class ProfileController {
     }
 
 
-    @PostMapping("me")
+    @PostMapping("users/me")
     @Operation(summary = "Cadastra um perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
@@ -71,7 +82,7 @@ public class ProfileController {
     }
 
 
-    @PutMapping("me")
+    @PutMapping("users/me")
     @Operation(summary = "Altera o próprio perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ProfileResponseDTO> updateProfile(
@@ -86,14 +97,4 @@ public class ProfileController {
     }
 
 
-    @DeleteMapping("{id}")
-    @Operation(summary = "Deleta um perfil")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> deleteProfile(@PathVariable("id") String id) {
-        return service.getByIdProfile(UUID.fromString(id))
-                .map(p -> {
-                    service.delete(p);
-                    return ResponseEntity.noContent().build();
-                }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
 }

@@ -1,17 +1,20 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.project;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.StateBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.CurrentDateGreaterThanProjectDate;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.SomeValueMustBeFilled;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,15 +25,18 @@ public class ProjectService {
     private final ProjectRepository repository;
 
 
-    public List<Project> getAllProjects() {
-        return repository.findAll();
+    public Optional<Project> getProjectById(UUID uuid) {
+        return repository.findById(uuid);
     }
 
 
-    public Project register(Project project) {
-        User user = UserLogged.load();
-        project.setUser(user);
+    public List<Project> getProjectsByUserForStateBusiness(User user, StateBusiness state) {
+        return repository.getProjectsByUserForStateBusiness(UUID.fromString(user.getId()), state);
+    }
 
+
+    @Transactional
+    public Project save(Project project) {
         projectsOpen(project);
         fieldsPrice(project);
         fieldDateClosing(project.getClosingDate());
@@ -39,9 +45,22 @@ public class ProjectService {
     }
 
 
+    @Transactional
+    public void delete(Project project) {
+        UUID idUser = UUID.fromString(project.getUser().getId());
+        UUID idProject = project.getIdProject();
+        Optional<Project> projectOptional = repository.getStateBusinessWorking(idUser, idProject);
+
+        if (projectOptional.isPresent()) {
+            throw new RuntimeException("Não é possível excluir esse projeto pois já foi iniciado!");
+        }
+        repository.delete(project);
+    }
+
+
     public void projectsOpen(Project project) {
         User user = project.getUser();
-        List<Project> projects = repository.getProjectsOpenByUser(UUID.fromString(user.getId()));
+        List<Project> projects = getProjectsByUserForStateBusiness(user, StateBusiness.OPEN);
 
         if (projects.size() >= 2) {
             throw new RuntimeException("Estourou o limite de projetos por usuário!");

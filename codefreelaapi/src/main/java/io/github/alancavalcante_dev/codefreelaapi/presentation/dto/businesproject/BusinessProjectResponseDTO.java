@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.dto.businesproject;
 
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.StateBusiness;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.StateBusiness;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

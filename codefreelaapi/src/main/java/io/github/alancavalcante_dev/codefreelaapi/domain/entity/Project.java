@@ -2,7 +2,6 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.StateBusiness;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
