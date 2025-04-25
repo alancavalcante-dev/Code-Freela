@@ -29,7 +29,6 @@ public class ProjectDTO {
 
     BigDecimal priceProject;
 
-    @NotBlank
     @NotNull
     LocalDate closingDate;
 

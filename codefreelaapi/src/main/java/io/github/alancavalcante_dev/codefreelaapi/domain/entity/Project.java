@@ -54,7 +54,7 @@ public class Project {
     private LocalDate closingDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private StateBusiness stateBusiness;
 
     @CreatedDate

@@ -52,6 +52,7 @@ public class ProjectController {
     public ResponseEntity<Void> registerProjectByUser(@RequestBody @Valid ProjectDTO dto) {
         Project project = mapper.toEntity(dto);
         project.setUser(UserLogged.load());
+        project.setStateBusiness(StateBusiness.OPEN);
         Project projectSaved = service.save(project);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(projectSaved.getIdProject()).toUri();
@@ -85,7 +86,7 @@ public class ProjectController {
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Usuário deleta o próprio projeto")
-    public ResponseEntity deleteProjectByUser(@PathVariable String id) {
+    public ResponseEntity<Void> deleteProjectByUser(@PathVariable String id) {
         Optional<Project> projectOptional = service.getProjectById(UUID.fromString(id));
         if (projectOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

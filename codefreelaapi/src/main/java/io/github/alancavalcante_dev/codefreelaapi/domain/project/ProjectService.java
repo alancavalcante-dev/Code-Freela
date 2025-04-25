@@ -31,7 +31,7 @@ public class ProjectService {
 
 
     public List<Project> getProjectsByUserForStateBusiness(User user, StateBusiness state) {
-        return repository.getProjectsByUserForStateBusiness(UUID.fromString(user.getId()), state);
+        return repository.getProjectsByUserForStateBusiness(user.getId(), state);
     }
 
 

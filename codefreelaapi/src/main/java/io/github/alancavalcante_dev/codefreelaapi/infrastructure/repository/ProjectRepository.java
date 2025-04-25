@@ -3,7 +3,6 @@ package io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.StateBusiness;
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,6 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
 
     @Query("select p from Project p where p.user.id = :idUser and p.stateBusiness = :state")
-    List<Project> getProjectsByUserForStateBusiness(UUID idUser, StateBusiness state);
+    List<Project> getProjectsByUserForStateBusiness(String idUser, StateBusiness state);
 
 }
