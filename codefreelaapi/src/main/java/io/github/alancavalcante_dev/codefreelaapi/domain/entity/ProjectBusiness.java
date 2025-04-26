@@ -3,8 +3,10 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -18,23 +20,23 @@ public class ProjectBusiness {
     @Column(name = "id_project_business")
     private UUID idProjectBusiness;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_project", nullable = false)
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "id_client", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "id_developer")
+    @JoinColumn(name = "id_developer", nullable = false)
     private User userDeveloper;
-
-
-    @Column(name = "confirm_client")
-    private boolean confirmClient;
 
     @Column(name = "confirm_developer")
     private boolean confirmDeveloper;
+
+    @Column(name = "confirm_client")
+    private boolean confirmClient = false;
+
+    @CreatedDate
+    @Column(name = "date_match")
+    private LocalDate dateMatch;
+
 
 }

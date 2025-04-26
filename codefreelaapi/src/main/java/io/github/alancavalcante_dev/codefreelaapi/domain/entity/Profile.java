@@ -55,13 +55,4 @@ public class Profile {
     private BigDecimal balance;
 
 
-    //    @OneToMany
-//    private List<BusinessProject> businessProject;
-
-//    @OneToMany(mappedBy = "profilePayer")
-//    private List<Transactions> transactionsSent;
-//
-//    @OneToMany(mappedBy = "profileReceived")
-//    private List<Transactions> transactionsReceived;
-
 }

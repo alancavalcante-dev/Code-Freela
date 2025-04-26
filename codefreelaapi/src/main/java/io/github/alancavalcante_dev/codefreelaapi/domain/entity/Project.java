@@ -32,9 +32,6 @@ public class Project {
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
-    private List<ProjectBusiness> projectBusinesses = new ArrayList<>();
-
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
@@ -60,5 +57,8 @@ public class Project {
     @CreatedDate
     @Column(name = "date_created")
     private LocalDate dateCreated;
+
+//    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+//    private List<ProjectBusiness> projectBusinesses = new ArrayList<>();
 
 }
