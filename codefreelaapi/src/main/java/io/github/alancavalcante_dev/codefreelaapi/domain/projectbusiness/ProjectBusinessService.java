@@ -37,6 +37,12 @@ public class ProjectBusinessService {
     }
 
 
+    @Transactional
+    public void delete(ProjectBusiness project) {
+        repository.delete(project);
+    }
+
+
     public void validateClientVotedOnOwnBusiness(ProjectBusiness project) {
         User userDeveloper = project.getUserDeveloper();
         User userProject = project.getProject().getUser();
