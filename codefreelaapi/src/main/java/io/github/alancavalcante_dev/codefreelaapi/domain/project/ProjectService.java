@@ -6,7 +6,6 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.CurrentDateGreaterThanProjectDate;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.SomeValueMustBeFilled;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectRepository;
-import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,7 @@ public class ProjectService {
         projectsOpen(project);
         fieldsPrice(project);
         fieldDateClosing(project.getClosingDate());
+        projectsEquals(project);
 
         return repository.save(project);
     }
@@ -103,6 +103,18 @@ public class ProjectService {
             throw new CurrentDateGreaterThanProjectDate(
                     "Data do projeto deve ser maior que a data atual"
             );
+        }
+    }
+
+    public void projectsEquals(Project project) {
+        List<Project> projects = getProjectsByUserForStateBusiness(project.getUser(), StateBusiness.OPEN);
+
+        if (!projects.isEmpty()) {
+            Project proj = projects.getFirst();
+
+            if (project.getTitle().equals(proj.getTitle()) || project.getDescription().equals(proj.getDescription())) {
+                throw new RuntimeException("Já existe um projeto com o mesmo nome ou descrição");
+            }
         }
     }
 }

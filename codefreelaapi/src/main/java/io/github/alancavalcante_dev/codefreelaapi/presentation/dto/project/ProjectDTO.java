@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @Setter
 public class ProjectDTO {
 
+    String idProject;
+
     @NotBlank
     @NotNull
     @Size(min = 5, max = 100, message = "...")
