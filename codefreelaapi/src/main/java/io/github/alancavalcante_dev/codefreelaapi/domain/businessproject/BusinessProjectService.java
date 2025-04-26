@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.businessproject;
 
-//
+
 //import io.github.alancavalcante_dev.codefreelaapi.dto.StateBusiness;
 //import io.github.alancavalcante_dev.codefreelaapi.dto.businesproject.BusinessProjectInsertDTO;
 //import io.github.alancavalcante_dev.codefreelaapi.mapperstruct.BusinessProjectMapper;

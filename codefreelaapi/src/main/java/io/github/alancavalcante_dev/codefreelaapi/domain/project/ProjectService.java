@@ -8,6 +8,9 @@ import io.github.alancavalcante_dev.codefreelaapi.exceptions.SomeValueMustBeFill
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,8 +32,18 @@ public class ProjectService {
     }
 
 
+    // consulta com usuário logado
     public List<Project> getProjectsByUserForStateBusiness(User user, StateBusiness state) {
         return repository.getProjectsByUserForStateBusiness(user.getId(), state);
+    }
+
+    public List<Project> getProjectsByStateBusiness(StateBusiness state) {
+        return repository.findByStateBusiness(state);
+    }
+
+
+    public Page<Project> findAllWithPage(Specification<Project> spec, Pageable page){
+        return repository.findAll(spec, page);
     }
 
 
