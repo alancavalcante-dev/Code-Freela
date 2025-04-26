@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,25 +50,48 @@ public class PortfolioProjectController {
             @RequestParam(value = "price-project", required = false) BigDecimal priceProject,
             @RequestParam(value = "closing-date", required = false) LocalDate closingDate,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(value = "sortField", required = false) String sortField,
+            @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection
     )
     {
-        Specification<Project> spec = Specification.where(null);
-        spec.and(ProjectSpecification.hasTitle(title));
-        spec.and(ProjectSpecification.hasDescription(description));
-        spec.and(ProjectSpecification.gtaOrEqualPriceDay(priceDay));
-        spec.and(ProjectSpecification.gtaOrEqualPriceHour(priceHour));
-        spec.and(ProjectSpecification.gtaOrEqualPriceProject(priceProject));
-        spec.and(ProjectSpecification.gtaOrEqualClosingDate(closingDate));
+        Specification<Project> spec = null;
 
-        Pageable pageable = PageRequest.of(page, size);
+        if (title != null && !title.isBlank()) {
+            spec = Specification.where(ProjectSpecification.hasTitle(title));
+        }
+        if (description != null && !description.isBlank()) {
+            spec = (spec == null ? Specification.where(ProjectSpecification.hasDescription(description)) : spec.and(ProjectSpecification.hasDescription(description)));
+        }
+        if (priceDay != null) {
+            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceDay(priceDay)) : spec.and(ProjectSpecification.gtaOrEqualPriceDay(priceDay)));
+        }
+        if (priceHour != null) {
+            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceHour(priceHour)) : spec.and(ProjectSpecification.gtaOrEqualPriceHour(priceHour)));
+        }
+        if (priceProject != null) {
+            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceProject(priceProject)) : spec.and(ProjectSpecification.gtaOrEqualPriceProject(priceProject)));
+        }
+        if (closingDate != null) {
+            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualClosingDate(closingDate)) : spec.and(ProjectSpecification.gtaOrEqualClosingDate(closingDate)));
+        }
+
+        Pageable pageable;
+        if (sortField != null && !sortField.isBlank()) {
+            Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+            pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
+        } else {
+            pageable = PageRequest.of(page, size);
+        }
+
         Page<Project> result = service.findAllWithPage(spec, pageable);
         Page<ProjectDTO> resultDTO = result.map(mapper::toDTO);
 
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(resultDTO);
     }
+
 
 }
