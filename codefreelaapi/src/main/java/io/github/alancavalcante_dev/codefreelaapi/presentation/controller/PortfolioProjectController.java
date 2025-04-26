@@ -55,25 +55,25 @@ public class PortfolioProjectController {
             @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection
     )
     {
-        Specification<Project> spec = null;
+        Specification<Project> spec = ProjectSpecification.stateBusinessOpen();
 
         if (title != null && !title.isBlank()) {
-            spec = Specification.where(ProjectSpecification.hasTitle(title));
+            spec = spec.and(ProjectSpecification.hasTitle(title));
         }
         if (description != null && !description.isBlank()) {
-            spec = (spec == null ? Specification.where(ProjectSpecification.hasDescription(description)) : spec.and(ProjectSpecification.hasDescription(description)));
+            spec = spec.and(ProjectSpecification.hasDescription(description));
         }
         if (priceDay != null) {
-            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceDay(priceDay)) : spec.and(ProjectSpecification.gtaOrEqualPriceDay(priceDay)));
+            spec = spec.and(ProjectSpecification.gtaOrEqualPriceDay(priceDay));
         }
         if (priceHour != null) {
-            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceHour(priceHour)) : spec.and(ProjectSpecification.gtaOrEqualPriceHour(priceHour)));
+            spec = spec.and(ProjectSpecification.gtaOrEqualPriceHour(priceHour));
         }
         if (priceProject != null) {
-            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualPriceProject(priceProject)) : spec.and(ProjectSpecification.gtaOrEqualPriceProject(priceProject)));
+            spec = spec.and(ProjectSpecification.gtaOrEqualPriceProject(priceProject));
         }
         if (closingDate != null) {
-            spec = (spec == null ? Specification.where(ProjectSpecification.gtaOrEqualClosingDate(closingDate)) : spec.and(ProjectSpecification.gtaOrEqualClosingDate(closingDate)));
+            spec = spec.and(ProjectSpecification.gtaOrEqualClosingDate(closingDate));
         }
 
         Pageable pageable;

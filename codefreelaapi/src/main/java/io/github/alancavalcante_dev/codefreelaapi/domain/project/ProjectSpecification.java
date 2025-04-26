@@ -9,6 +9,11 @@ import java.time.LocalDate;
 
 public class ProjectSpecification {
 
+    public static Specification<Project> stateBusinessOpen() {
+        return (root, query, cb) -> cb.equal(root.get("stateBusiness"), "OPEN");
+    }
+
+
     public static Specification<Project> hasTitle(String title){
         return (root, query, cb) -> {
             if (title == null || title.isBlank()) return null;
