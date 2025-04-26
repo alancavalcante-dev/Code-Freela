@@ -21,6 +21,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final ProfileValidatorImpl profileValidate;
+    private final UserLogged logged;
 
 
     public List<Profile> getAllProfiles() {
@@ -32,14 +33,14 @@ public class ProfileService {
     }
 
     public Optional<Profile> getProfileByIdUser(User user) {
-        return profileRepository.findByUser(user);
+        return profileRepository.getByIdUser(user.getId());
     }
 
 
     @Transactional
     public Profile register(Profile profile) {
         profileValidate.validate(profile);
-        profile.setUser(UserLogged.load());
+        profile.setUser(logged.load());
         profile.setBalance(BigDecimal.valueOf(0.0));
         return profileRepository.save(profile);
     }

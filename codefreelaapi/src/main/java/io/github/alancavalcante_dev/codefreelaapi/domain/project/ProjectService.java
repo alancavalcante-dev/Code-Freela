@@ -47,8 +47,9 @@ public class ProjectService {
 
     @Transactional
     public void delete(Project project) {
-        UUID idUser = UUID.fromString(project.getUser().getId());
+        UUID idUser = project.getUser().getId();
         UUID idProject = project.getIdProject();
+
         Optional<Project> projectOptional = repository.getStateBusinessWorking(idUser, idProject);
 
         if (projectOptional.isPresent()) {

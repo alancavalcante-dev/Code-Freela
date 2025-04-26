@@ -2,6 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,7 +16,7 @@ public interface ProfileRepository extends JpaRepository<Profile, UUID> {
 
     Optional<Profile> findByEmail(String profile);
 
-//    @Query("select * from Profile as p where p.User = :uuid;")
-    Optional<Profile> findByUser(User user);
+    @Query("select p from Profile p where p.user.id = :idUser")
+    Optional<Profile> getByIdUser(UUID idUser);
 
 }

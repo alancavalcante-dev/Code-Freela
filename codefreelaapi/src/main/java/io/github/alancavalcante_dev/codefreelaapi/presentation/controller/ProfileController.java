@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileInsertRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileUpdateRequestDTO;
@@ -30,9 +31,10 @@ public class ProfileController {
 
     private final ProfileService service;
     private final ProfileMapper mapper;
+    private final UserLogged logged;
 
 
-    @GetMapping("admin/projects")
+    @GetMapping("admin/profiles")
     @Operation(summary = "Pega todos os perfis")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProfileResponseDTO>> getAllProfile() {
@@ -46,7 +48,7 @@ public class ProfileController {
         return ResponseEntity.ok(listProfileClientDTO);
     }
 
-    @DeleteMapping("admin/projects/{id}")
+    @DeleteMapping("admin/profiles/{id}")
     @Operation(summary = "Deleta um perfil")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteProfile(@PathVariable("id") String id) {
@@ -58,17 +60,18 @@ public class ProfileController {
     }
 
 
-    @GetMapping("users/me")
+
+    @GetMapping("user/profiles")
     @Operation(summary = "Consulta o próprio perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ProfileResponseDTO> getMyProfile() {
-        return service.getProfileByIdUser(UserLogged.load())
+        return service.getProfileByIdUser(logged.load())
                 .map(p -> ResponseEntity.ok(mapper.toResponseDTO(p)))
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
 
-    @PostMapping("users/me")
+    @PostMapping("user/profiles")
     @Operation(summary = "Cadastra um perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
@@ -82,13 +85,13 @@ public class ProfileController {
     }
 
 
-    @PutMapping("users/me")
+    @PutMapping("user/profiles")
     @Operation(summary = "Altera o próprio perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ProfileResponseDTO> updateProfile(
             @RequestBody @Valid ProfileUpdateRequestDTO profileUpdateResponseDTO
     ) {
-        Optional<Profile> profile = service.getProfileByIdUser(UserLogged.load());
+        Optional<Profile> profile = service.getProfileByIdUser(logged.load());
         if (profile.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

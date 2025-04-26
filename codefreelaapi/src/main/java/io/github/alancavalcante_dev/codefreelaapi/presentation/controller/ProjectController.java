@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("api/user/projects")
@@ -30,13 +29,14 @@ public class ProjectController {
 
     private final ProjectService service;
     private final ProjectMapper mapper;
+    private final UserLogged logged;
 
 
     @GetMapping("{stateBusiness}")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Pega os projetos do próprio usuário com consulta personalizada")
     public ResponseEntity<List<ProjectDTO>> getProjectsOpenByUser(@PathVariable String stateBusiness) {
-        List<Project> projects = service.getProjectsByUserForStateBusiness(UserLogged.load(), StateBusiness.valueOf(stateBusiness));
+        List<Project> projects = service.getProjectsByUserForStateBusiness(logged.load(), StateBusiness.valueOf(stateBusiness));
         if (projects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -51,7 +51,7 @@ public class ProjectController {
     @Operation(summary = "Usuário cadastra um projeto")
     public ResponseEntity<Void> registerProjectByUser(@RequestBody @Valid ProjectDTO dto) {
         Project project = mapper.toEntity(dto);
-        project.setUser(UserLogged.load());
+        project.setUser(logged.load());
         project.setStateBusiness(StateBusiness.OPEN);
         Project projectSaved = service.save(project);
 

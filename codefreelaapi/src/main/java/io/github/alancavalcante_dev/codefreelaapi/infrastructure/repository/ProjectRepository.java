@@ -21,6 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
 
     @Query("select p from Project p where p.user.id = :idUser and p.stateBusiness = :state")
-    List<Project> getProjectsByUserForStateBusiness(String idUser, StateBusiness state);
+    List<Project> getProjectsByUserForStateBusiness(UUID idUser, StateBusiness state);
 
 }
