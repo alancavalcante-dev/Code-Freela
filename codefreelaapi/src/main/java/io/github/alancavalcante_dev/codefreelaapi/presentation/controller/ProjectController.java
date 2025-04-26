@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.StateBusiness;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.ProjectService;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.mapper.ProjectMapper;

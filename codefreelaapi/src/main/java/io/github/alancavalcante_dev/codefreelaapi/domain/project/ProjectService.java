@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.project;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.StateBusiness;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.CurrentDateGreaterThanProjectDate;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.SomeValueMustBeFilled;

@@ -2,7 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.transaction;
 
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.TransactionalTypes;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.TransactionalTypes;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;

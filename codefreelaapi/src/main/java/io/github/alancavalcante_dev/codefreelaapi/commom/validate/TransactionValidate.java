@@ -2,7 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.commom.validate;
 
 import java.math.BigDecimal;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.TransactionalTypes;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.TransactionalTypes;
 import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transactions;
 import org.springframework.stereotype.Component;
 

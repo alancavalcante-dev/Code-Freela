@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
