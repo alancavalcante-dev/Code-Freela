@@ -1,4 +1,4 @@
-package io.github.alancavalcante_dev.codefreelaapi.domain.user;
+package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

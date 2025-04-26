@@ -2,7 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.profile;
 
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import jakarta.transaction.Transactional;

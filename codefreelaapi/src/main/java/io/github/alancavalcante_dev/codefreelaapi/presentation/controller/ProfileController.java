@@ -1,6 +1,5 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileInsertRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileUpdateRequestDTO;

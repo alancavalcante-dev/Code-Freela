@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.UserRole;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.UserRole;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.user.AuthenticationDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.user.LoginResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.user.RegisterDTO;

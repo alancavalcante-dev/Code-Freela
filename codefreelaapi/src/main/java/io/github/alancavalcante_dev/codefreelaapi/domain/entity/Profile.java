@@ -1,7 +1,5 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.Address;
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;

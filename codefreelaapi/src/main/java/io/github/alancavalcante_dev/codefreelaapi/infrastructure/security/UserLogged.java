@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.infrastructure.security;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.user.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
