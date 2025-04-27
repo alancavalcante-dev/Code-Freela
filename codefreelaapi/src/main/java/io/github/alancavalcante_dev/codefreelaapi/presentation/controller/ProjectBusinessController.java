@@ -6,8 +6,6 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.ProjectService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness.ProjectBusinessService;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileResponseDTO;
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileUpdateRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.projectbusiness.ProjectBusinessConfirmationDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.projectbusiness.ProjectBusinessDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.projectbusiness.ProjectBusinessResponseDTO;
@@ -45,6 +43,7 @@ public class ProjectBusinessController {
         if (listProjects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
         List<ProjectBusinessResponseDTO> dto = listProjects
                 .stream().map(p -> new ProjectBusinessResponseDTO(
                         p.getIdProjectBusiness().toString(),
@@ -99,7 +98,7 @@ public class ProjectBusinessController {
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Usuário deleta o próprio projeto")
-    public ResponseEntity<Void> deleteProjectByUser(@PathVariable String id) {
+    public ResponseEntity<Void> deleteMatch(@PathVariable String id) {
         Optional<ProjectBusiness> projectOptional = service.getByIdProjectBusiness(UUID.fromString(id));
         if (projectOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

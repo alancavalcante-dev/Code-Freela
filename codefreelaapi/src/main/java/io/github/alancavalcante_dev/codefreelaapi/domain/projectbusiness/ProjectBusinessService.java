@@ -15,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProjectBusinessService {
 
+
     private final ProjectBusinessRepository repository;
 
 
@@ -32,6 +33,7 @@ public class ProjectBusinessService {
     public ProjectBusiness save(ProjectBusiness project) {
         validateClientVotedOnOwnBusiness(project);
         validateDeveloperQuantityProjectsIsConfirm(project);
+        validateMatchesDuplicates(project);
 
         return repository.save(project);
     }
@@ -40,6 +42,16 @@ public class ProjectBusinessService {
     @Transactional
     public void delete(ProjectBusiness project) {
         repository.delete(project);
+    }
+
+
+    public void validateMatchesDuplicates(ProjectBusiness project) {
+        List<ProjectBusiness> projectBusinessList = getAllMatchesBusiness(project.getUserDeveloper());
+        List<ProjectBusiness> filter = projectBusinessList.stream()
+                .filter(p -> p.getIdProjectBusiness() == project.getIdProjectBusiness()).toList();
+        if (!filter.isEmpty()) {
+            throw new RuntimeException("Não pode dar mais de 1 match no mesmo projeto");
+        }
     }
 
 
@@ -55,10 +67,15 @@ public class ProjectBusinessService {
 
     public void validateDeveloperQuantityProjectsIsConfirm(ProjectBusiness project) {
         User user = project.getUserDeveloper();
-        List<ProjectBusiness> projects = repository.getAllByIdUserIsConfirm(user.getId());
+        if (project.isConfirmDeveloper()) {
+            List<ProjectBusiness> projects = repository.getAllByIdUserIsConfirm(user.getId());
 
-        if (projects.size() >= 2) {
-            throw new RuntimeException("Estourou o limite de projetos por desenvolvedor!");
+            if (projects.size() >= 2) {
+                throw new RuntimeException("Estourou o limite de projetos por desenvolvedor!");
+            }
         }
+
+
+
     }
 }
