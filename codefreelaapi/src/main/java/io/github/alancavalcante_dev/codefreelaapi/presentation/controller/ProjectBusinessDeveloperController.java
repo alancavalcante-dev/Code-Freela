@@ -1,6 +1,5 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.ProjectService;
@@ -24,10 +23,10 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/user/projects/business")
+@RequestMapping("api/user/projects/business/developer")
 @RequiredArgsConstructor
 @Tag(name = "Negociação de projetos - Match de developer")
-public class ProjectBusinessController {
+public class ProjectBusinessDeveloperController {
 
 
     private final ProjectBusinessService service;
@@ -37,9 +36,9 @@ public class ProjectBusinessController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Pega todos as negociacoes ou matches do cliente")
-    public ResponseEntity<List<ProjectBusinessResponseDTO>> getAllMatchesBusiness() {
-        List<ProjectBusiness> listProjects = service.getAllMatchesBusiness(logged.load());
+    @Operation(summary = "Pega todos as negociacoes ou matches do developer")
+    public ResponseEntity<List<ProjectBusinessResponseDTO>> getAllMatchesBusinessUserDeveloper() {
+        List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserClient(logged.load());
         if (listProjects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -71,7 +70,7 @@ public class ProjectBusinessController {
         business.setProject(projOpt.get());
         business.setUserDeveloper(logged.load());
         business.setConfirmDeveloper(request.isConfirm());
-        service.save(business);
+        service.register(business);
 
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
@@ -90,14 +89,14 @@ public class ProjectBusinessController {
         }
         ProjectBusiness proj = projectOpt.get();
         proj.setConfirmDeveloper(request.isConfirmation());
-        service.save(proj);
+        service.update(proj);
         return ResponseEntity.ok().build();
     }
 
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Usuário deleta o próprio projeto")
+    @Operation(summary = "Usuário developer deleta o próprio match")
     public ResponseEntity<Void> deleteMatch(@PathVariable String id) {
         Optional<ProjectBusiness> projectOptional = service.getByIdProjectBusiness(UUID.fromString(id));
         if (projectOptional.isEmpty()) {

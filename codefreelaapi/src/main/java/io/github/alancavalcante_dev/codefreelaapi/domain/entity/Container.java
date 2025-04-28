@@ -13,9 +13,11 @@ import java.util.UUID;
 public class Container {
 
     /**
-     * A classe Container representa o controle de versionamento e armazenamento dos sistema feitos pelos developers.
+     * A classe Container representa o controle de versionamento
+     * e armazenamento dos sistema feitos pelos developers.
      *
-     * Então só é criado um registro se caso o developer e o cliente entre em acordo, essa entidade é startada
+     * Então só é criado um registro se caso o developer e
+     * o cliente entre em acordo, essa entidade é startada
      */
 
     @Id

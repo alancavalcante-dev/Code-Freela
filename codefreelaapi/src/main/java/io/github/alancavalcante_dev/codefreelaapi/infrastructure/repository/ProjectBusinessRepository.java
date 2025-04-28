@@ -12,7 +12,10 @@ import java.util.UUID;
 public interface ProjectBusinessRepository extends JpaRepository<ProjectBusiness, UUID> {
 
     @Query("select p from ProjectBusiness p where p.userDeveloper.id = :idUser")
-    List<ProjectBusiness> getAllByIdUser(UUID idUser);
+    List<ProjectBusiness> getAllByIdUserDeveloper(UUID idUser);
+
+    @Query("select p from ProjectBusiness p where p.project.user.id = :idUser")
+    List<ProjectBusiness> getAllByIdUserClient(UUID idUser);
 
     @Query("select p from ProjectBusiness p where p.userDeveloper.id = :idUser and confirmDeveloper = true")
     List<ProjectBusiness> getAllByIdUserIsConfirm(UUID idUser);

@@ -1,7 +1,9 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectBusinessRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class ProjectBusinessService {
 
 
     private final ProjectBusinessRepository repository;
+    private final ContainerRepository containerRepository;
 
 
     public Optional<ProjectBusiness> getByIdProjectBusiness(UUID uuid) {
@@ -24,19 +27,29 @@ public class ProjectBusinessService {
     }
 
 
-    public List<ProjectBusiness> getAllMatchesBusiness(User user) {
-        return repository.getAllByIdUser(user.getId());
+    public List<ProjectBusiness> getAllMatchesBusinessUserDeveloper(User user) {
+        return repository.getAllByIdUserDeveloper(user.getId());
+    }
+
+
+    public List<ProjectBusiness> getAllMatchesBusinessUserClient(User user) {
+        return repository.getAllByIdUserClient(user.getId());
     }
 
 
     @Transactional
-    public ProjectBusiness save(ProjectBusiness project) {
-        validateClientVotedOnOwnBusiness(project);
-        validateDeveloperQuantityProjectsIsConfirm(project);
-        validateMatchesDuplicates(project);
-
+    public ProjectBusiness register(ProjectBusiness project) {
+        validatorRegister(project);
         return repository.save(project);
     }
+
+
+    @Transactional
+    public ProjectBusiness update(ProjectBusiness project) {
+        validatorUpdate(project);
+        return repository.save(project);
+    }
+
 
 
     @Transactional
@@ -45,8 +58,33 @@ public class ProjectBusinessService {
     }
 
 
+    public void validatorRegister(ProjectBusiness project) {
+        validateClientVotedOnOwnBusiness(project);
+        validateDeveloperQuantityProjectsIsConfirm(project);
+        validateMatchesDuplicates(project);
+        validateMatchesConfirmationCreateContainerProduction(project);
+    }
+
+
+    public void validatorUpdate(ProjectBusiness project) {
+        validateClientVotedOnOwnBusiness(project);
+        validateDeveloperQuantityProjectsIsConfirm(project);
+        validateMatchesConfirmationCreateContainerProduction(project);
+    }
+
+
+    @Transactional
+    public void validateMatchesConfirmationCreateContainerProduction(ProjectBusiness project) {
+        if (project.isConfirmDeveloper() && project.isConfirmClient()) {
+            Container container = new Container();
+            container.setProjectBusiness(project);
+            containerRepository.save(container);
+        }
+    }
+
+
     public void validateMatchesDuplicates(ProjectBusiness project) {
-        List<ProjectBusiness> projectBusinessList = getAllMatchesBusiness(project.getUserDeveloper());
+        List<ProjectBusiness> projectBusinessList = getAllMatchesBusinessUserDeveloper(project.getUserDeveloper());
         List<ProjectBusiness> filter = projectBusinessList.stream()
                 .filter(p -> p.getIdProjectBusiness() == project.getIdProjectBusiness()).toList();
         if (!filter.isEmpty()) {
@@ -74,8 +112,5 @@ public class ProjectBusinessService {
                 throw new RuntimeException("Estourou o limite de projetos por desenvolvedor!");
             }
         }
-
-
-
     }
 }
