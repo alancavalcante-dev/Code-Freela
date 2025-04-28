@@ -20,7 +20,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/user/projects/business/clients")
+@RequestMapping("api/user/projects/business/client")
 @RequiredArgsConstructor
 @Tag(name = "Negociação de projetos - Match de clients")
 public class ProjectBusinessClientController {
