@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,7 +27,7 @@ public class Container {
     private UUID idContainer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_project", nullable = false)
+    @JoinColumn(name = "id_project_business", nullable = false)
     private ProjectBusiness projectBusiness;
 
     @Column(name = "date_last_deploy")
@@ -37,4 +38,7 @@ public class Container {
 
     @Column(name = "date_closing")
     private LocalDateTime dateClosing;
+
+    @Column(name = "state")
+    private StateProject stateProject;
 }

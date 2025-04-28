@@ -54,6 +54,7 @@ public class ProjectBusinessService {
 
     @Transactional
     public void delete(ProjectBusiness project) {
+        validatorDelete(project);
         repository.delete(project);
     }
 
@@ -70,6 +71,15 @@ public class ProjectBusinessService {
         validateClientVotedOnOwnBusiness(project);
         validateDeveloperQuantityProjectsIsConfirm(project);
         validateMatchesConfirmationCreateContainerProduction(project);
+    }
+
+
+    public void validatorDelete(ProjectBusiness project) {
+        Optional<Container> containerOpt = containerRepository.findByProjectBusiness(project);
+        if (containerOpt.isEmpty()) {
+            throw new RuntimeException("Não existe esse container vínculado com um negociamento feito!");
+        }
+        throw new RuntimeException("Não é possível excluir um Negociamento que já está em desenvolvimento!");
     }
 
 
