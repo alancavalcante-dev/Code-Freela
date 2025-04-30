@@ -2,7 +2,10 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "tbl_container")
+@EntityListeners(AuditingEntityListener.class)
 public class Container {
 
     /**
@@ -37,4 +41,8 @@ public class Container {
 
     @Column(name = "date_closing")
     private LocalDateTime dateClosing;
+
+    @CreatedDate
+    @Column(name = "date_created")
+    private LocalDate dateCreated;
 }
