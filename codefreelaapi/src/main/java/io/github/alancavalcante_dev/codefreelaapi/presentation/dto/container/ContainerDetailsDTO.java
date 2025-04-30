@@ -1,6 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.dto.container;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
@@ -22,6 +23,8 @@ public class ContainerDetailsDTO {
     LocalDate closingDateProject;
 
     LocalDate closingCreatedContainer;
+
+    StateProject stateProject;
 
     LocalDateTime lastDeploy;
 

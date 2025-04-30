@@ -24,7 +24,7 @@ public class ProjectBusiness {
     @JoinColumn(name = "id_project", nullable = false)
     private Project project;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_developer", nullable = false)
     private User userDeveloper;
 

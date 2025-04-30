@@ -38,7 +38,7 @@ public class ProjectBusinessDeveloperController {
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Pega todos as negociacoes ou matches do developer")
     public ResponseEntity<List<ProjectBusinessResponseDTO>> getAllMatchesBusinessUserDeveloper() {
-        List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserClient(logged.load());
+        List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserDeveloper(logged.load());
         if (listProjects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

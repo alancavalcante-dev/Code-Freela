@@ -69,6 +69,7 @@ public class ContainerController {
                 container.getProjectBusiness().getProject().getStateBusiness(),
                 container.getProjectBusiness().getProject().getClosingDate(),
                 container.getDateCreated(),
+                container.getStateProject(),
                 container.getDateLastDeploy()
         );
 

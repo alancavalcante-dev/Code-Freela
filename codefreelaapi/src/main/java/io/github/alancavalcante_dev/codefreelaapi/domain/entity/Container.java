@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,8 +19,7 @@ public class Container {
 
     /**
      * A classe Container representa o controle de versionamento
-     * e armazenamento dos sistema feitos pelos developers.
-     *
+     * e armazenamento dos sistema feitos pelos developers.*
      * Então só é criado um registro se caso o developer e
      * o cliente entre em acordo, essa entidade é startada
      */
@@ -30,7 +30,7 @@ public class Container {
     private UUID idContainer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_project", nullable = false)
+    @JoinColumn(name = "id_project_business", nullable = false)
     private ProjectBusiness projectBusiness;
 
     @Column(name = "date_last_deploy")
@@ -45,4 +45,7 @@ public class Container {
     @CreatedDate
     @Column(name = "date_created")
     private LocalDate dateCreated;
+
+    @Column(name = "state")
+    private StateProject stateProject;
 }

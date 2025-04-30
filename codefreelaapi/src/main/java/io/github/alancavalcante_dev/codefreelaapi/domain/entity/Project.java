@@ -28,7 +28,7 @@ public class Project {
     @Column(name = "id_project")
     private UUID idProject;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
