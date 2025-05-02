@@ -63,7 +63,7 @@ public class ProjectBusinessClientController {
             @PathVariable String id,
             @RequestBody @Valid ProjectBusinessConfirmationDTO request
     ) {
-        Optional<ProjectBusiness> projectOpt = service.getByIdProjectBusiness(UUID.fromString(id));
+        Optional<ProjectBusiness> projectOpt = service.getByIdProjectBusinessForUserClient(UUID.fromString(id), UUID.fromString(id));
         if (projectOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

@@ -26,6 +26,14 @@ public class ProjectBusinessService {
         return repository.findById(uuid);
     }
 
+    public Optional<ProjectBusiness> getByIdProjectBusinessForUserDeveloper(UUID idUser, UUID idProjectBusiness){
+        return repository.getByIdProjectBusinessForUserDeveloper(idUser, idProjectBusiness);
+    }
+
+    public Optional<ProjectBusiness> getByIdProjectBusinessForUserClient(UUID idUser, UUID idProjectBusiness){
+        return repository.getByIdProjectBusinessForUserClient(idUser, idProjectBusiness);
+    }
+
 
     public List<ProjectBusiness> getAllMatchesBusinessUserDeveloper(User user) {
         return repository.getAllByIdUserDeveloper(user.getId());
@@ -54,7 +62,6 @@ public class ProjectBusinessService {
 
     @Transactional
     public void delete(ProjectBusiness project) {
-        validatorDelete(project);
         repository.delete(project);
     }
 
@@ -73,14 +80,6 @@ public class ProjectBusinessService {
         validateMatchesConfirmationCreateContainerProduction(project);
     }
 
-
-    public void validatorDelete(ProjectBusiness project) {
-        Optional<Container> containerOpt = containerRepository.findByProjectBusiness(project);
-        if (containerOpt.isEmpty()) {
-            throw new RuntimeException("Não existe esse container vínculado com um negociamento feito!");
-        }
-        throw new RuntimeException("Não é possível excluir um Negociamento que já está em desenvolvimento!");
-    }
 
 
     @Transactional

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -19,4 +20,10 @@ public interface ProjectBusinessRepository extends JpaRepository<ProjectBusiness
 
     @Query("select p from ProjectBusiness p where p.userDeveloper.id = :idUser and confirmDeveloper = true")
     List<ProjectBusiness> getAllByIdUserIsConfirm(UUID idUser);
+
+    @Query("Select p From ProjectBusiness p Where p.userDeveloper.id = :idUser And p.idProjectBusiness = :idProjectBusiness")
+    Optional<ProjectBusiness> getByIdProjectBusinessForUserDeveloper(UUID idUser, UUID idProjectBusiness);
+
+    @Query("Select p From ProjectBusiness p Where p.project.user.id = :idUser And p.idProjectBusiness = :idProjectBusiness")
+    Optional<ProjectBusiness> getByIdProjectBusinessForUserClient(UUID idUser, UUID idProjectBusiness);
 }

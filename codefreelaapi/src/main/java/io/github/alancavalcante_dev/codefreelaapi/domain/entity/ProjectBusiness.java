@@ -37,6 +37,4 @@ public class ProjectBusiness {
     @CreatedDate
     @Column(name = "date_match")
     private LocalDate dateMatch;
-
-
 }
