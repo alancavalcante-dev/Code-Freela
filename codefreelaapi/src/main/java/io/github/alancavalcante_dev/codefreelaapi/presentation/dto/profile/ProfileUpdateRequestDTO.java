@@ -31,8 +31,8 @@ public class ProfileUpdateRequestDTO {
     @Size(min = 11, message = "CPF: é de 11 caracteres, modelo: xxxxxxxxxxx", max = 11)
     String cpf;
 
-    @NotNull(message = "Tem que definir se é Pessoa Juridica ou não.")
-    boolean isPj;
+    @NotNull(message = "Tem que definir se é desenvolvedor ou não.")
+    Boolean isDeveloper;
 
     AddressDTO address;
 }

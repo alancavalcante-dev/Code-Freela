@@ -33,33 +33,6 @@ public class ProfileController {
     private final UserLogged logged;
 
 
-    @GetMapping("admin/profiles")
-    @Operation(summary = "Pega todos os perfis")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<ProfileResponseDTO>> getAllProfile() {
-        List<Profile> allProfiles = service.getAllProfiles();
-        List<ProfileResponseDTO> listProfileClientDTO = allProfiles.stream().
-                map(mapper::toResponseDTO).toList();
-
-        if (listProfileClientDTO.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(listProfileClientDTO);
-    }
-
-    @DeleteMapping("admin/profiles/{id}")
-    @Operation(summary = "Deleta um perfil")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> deleteProfile(@PathVariable("id") String id) {
-        return service.getByIdProfile(UUID.fromString(id))
-                .map(p -> {
-                    service.delete(p);
-                    return ResponseEntity.noContent().build();
-                }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-
-
     @GetMapping("user/profiles")
     @Operation(summary = "Consulta o próprio perfil")
     @PreAuthorize("hasRole('USER')")

@@ -15,6 +15,6 @@ public class ProfileResponseDTO {
     String email;
     String phone;
     String cpf;
-    boolean isPj;
+    Boolean isDeveloper;
     AddressDTO address;
 }

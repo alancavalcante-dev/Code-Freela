@@ -48,6 +48,7 @@ public class ProfileService {
 
     @Transactional
     public Profile update(Profile profile) {
+        profileValidate.validatorCreatePortfolioUserDeveloper(profile);
         return profileRepository.save(profile);
     }
 

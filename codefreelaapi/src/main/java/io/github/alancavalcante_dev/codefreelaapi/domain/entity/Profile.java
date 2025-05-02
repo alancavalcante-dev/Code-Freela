@@ -34,8 +34,8 @@ public class Profile {
     @Column(length = 11, nullable = false, unique = true)
     private String cpf;
 
-    @Column(nullable = false)
-    private boolean isPj;
+    @Column(nullable = false, name = "is_developer")
+    private Boolean isDeveloper;
 
     @CreatedDate
     @Column(updatable = false)
