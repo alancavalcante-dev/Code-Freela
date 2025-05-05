@@ -51,7 +51,7 @@ public class ProfileValidatorImpl implements Validate<Profile> {
         if (profile.getIsDeveloper()) {
             PortfolioDeveloper portDev = new PortfolioDeveloper();
             portDev.setPresentation("Olá, me chamo " + profile.getName());
-            portDev.setResume("Seja bem-vindo ao meu portfólio");
+            portDev.setResume("Seja bem-vindo ao meu portfólio de teste");
             portDev.setUser(profile.getUser());
             portfolioDeveloperRepository.save(portDev);
         }

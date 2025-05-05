@@ -18,13 +18,15 @@ public class PortfolioDeveloper {
     @Column(name = "id_developer")
     private UUID idDeveloper;
 
+    @Column(nullable = false, length = 100)
     private String presentation;
 
+    @Column(nullable = false, length = 180)
     private String resume;
 
     @ManyToMany
     @JoinTable(
-            name = "tbl_portfolio_language", // Tabela intermediária
+            name = "tbl_portfolio_language",
             joinColumns = @JoinColumn(name = "id_developer"),
             inverseJoinColumns = @JoinColumn(name = "id_language")
     )
@@ -33,5 +35,9 @@ public class PortfolioDeveloper {
     @OneToOne
     @JoinColumn(name = "id_user")
     private User user;
+
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "id_profile")
+    private Profile profile;
 }
 
