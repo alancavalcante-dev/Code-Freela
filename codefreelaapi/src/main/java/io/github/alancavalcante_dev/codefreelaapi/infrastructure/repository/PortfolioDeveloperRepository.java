@@ -14,7 +14,6 @@ import java.util.UUID;
 public interface PortfolioDeveloperRepository extends JpaRepository<PortfolioDeveloper, UUID>,
         JpaSpecificationExecutor<PortfolioDeveloper> {
 
-    @Query("Select p From PortfolioDeveloper p Where p.user.id = :idDeveloper")
-    Optional<PortfolioDeveloper> getPortfolioDeveloperByIdDeveloper(UUID idDeveloper);
-
+    @Query("Select p From PortfolioDeveloper p Where p.user.id = :IdUser")
+    Optional<PortfolioDeveloper> getPortfolioDeveloperByIdUser(UUID IdUser);
 }

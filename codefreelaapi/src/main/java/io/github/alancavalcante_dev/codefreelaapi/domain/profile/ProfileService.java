@@ -24,14 +24,6 @@ public class ProfileService {
     private final UserLogged logged;
 
 
-    public List<Profile> getAllProfiles() {
-        return profileRepository.findAll();
-    }
-
-    public Optional<Profile> getByIdProfile(UUID uuid) {
-        return profileRepository.findById(uuid);
-    }
-
     public Optional<Profile> getProfileByIdUser(User user) {
         return profileRepository.getByIdUser(user.getId());
     }
@@ -51,12 +43,5 @@ public class ProfileService {
         profileValidate.validatorCreatePortfolioUserDeveloper(profile);
         return profileRepository.save(profile);
     }
-
-
-    @Transactional
-    public void delete(Profile profile) {
-        profileRepository.delete(profile);
-    }
-
 }
 

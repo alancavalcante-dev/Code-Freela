@@ -24,8 +24,8 @@ public class ContainerService {
         return repository.getContainersByIdUser(user.getId());
     }
 
-    public Optional<Container> getContainerById(UUID uuid) {
-        return repository.findById(uuid);
+    public Optional<Container> getContainerById(UUID idUser, UUID idContainer) {
+        return repository.getContainerById(idUser, idContainer);
     }
 
 }

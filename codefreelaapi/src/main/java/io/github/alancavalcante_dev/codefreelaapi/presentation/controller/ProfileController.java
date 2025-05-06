@@ -1,5 +1,8 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Address;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.ProfileValidatorImpl;
+import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.AddressDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileInsertRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileUpdateRequestDTO;
@@ -22,7 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/user/profiles")
 @RequiredArgsConstructor
 @Tag(name = "Perfil de usuário")
 public class ProfileController {
@@ -33,7 +36,7 @@ public class ProfileController {
     private final UserLogged logged;
 
 
-    @GetMapping("user/profiles")
+    @GetMapping
     @Operation(summary = "Consulta o próprio perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ProfileResponseDTO> getMyProfile() {
@@ -43,31 +46,48 @@ public class ProfileController {
     }
 
 
-    @PostMapping("user/profiles")
+    @PostMapping
     @Operation(summary = "Cadastra um perfil")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
         Profile entity = mapper.toEntity(profile);
-        service.register(entity);
+        Profile saved = service.register(entity);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(entity.getIdProfile()).toUri();
+                .path("/{id}").buildAndExpand(saved.getIdProfile()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
 
-    @PutMapping("user/profiles")
+    @PutMapping
     @Operation(summary = "Altera o próprio perfil")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ProfileResponseDTO> updateProfile(
-            @RequestBody @Valid ProfileUpdateRequestDTO profileUpdateResponseDTO
-    ) {
-        Optional<Profile> profile = service.getProfileByIdUser(logged.load());
-        if (profile.isEmpty()) {
+    public ResponseEntity<ProfileResponseDTO> updateProfile( @RequestBody @Valid ProfileUpdateRequestDTO data) {
+
+        Optional<Profile> profileOpt = service.getProfileByIdUser(logged.load());
+        if (profileOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Profile saved = service.update(profile.get());
+
+        Profile profile = profileOpt.get();
+        Address address = profile.getAddress();
+        AddressDTO addressDTO = data.getAddress();
+
+        address.setAddress(addressDTO.getAddress());
+        address.setAddressNumber(addressDTO.getAddressNumber());
+        address.setCity(addressDTO.getCity());
+        address.setState(addressDTO.getState());
+        address.setNeighborhood(addressDTO.getNeighborhood());
+
+        profile.setName(data.getName());
+        profile.setEmail(data.getEmail());
+        profile.setPhone(data.getPhone());
+        profile.setCpf(data.getCpf());
+        profile.setIsDeveloper(data.getIsDeveloper());
+        profile.setAddress(address);
+
+        Profile saved = service.update(profile);
         return ResponseEntity.ok(mapper.toResponseDTO(saved));
     }
 

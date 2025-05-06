@@ -17,7 +17,7 @@ public class PortfolioDeveloperService {
     private final PortfolioDeveloperRepository repository;
 
     public Optional<PortfolioDeveloper> getPortfolioDeveloperByIdDeveloper(UUID uuid) {
-        return repository.getPortfolioDeveloperByIdDeveloper(uuid);
+        return repository.getPortfolioDeveloperByIdUser(uuid);
     }
 
     public List<PortfolioDeveloper> getAllDevelopers() {

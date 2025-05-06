@@ -55,8 +55,9 @@ public class ContainerController {
 
     @GetMapping("{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ContainerDetailsDTO> getContainerByUser(@PathVariable String id) {
-        Optional<Container> containerOpt = service.getContainerById(UUID.fromString(id));
+    @Operation(summary = "Consulta Container por ID com usuário logado")
+    public ResponseEntity<ContainerDetailsDTO> getContainerByUserAndIdContainer(@PathVariable String id) {
+        Optional<Container> containerOpt = service.getContainerById(logged.load().getId(), UUID.fromString(id));
 
         if (containerOpt.isEmpty()) {
             return ResponseEntity.notFound().build();

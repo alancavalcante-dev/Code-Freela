@@ -27,18 +27,18 @@ public class ProjectService {
     private final ProjectRepository repository;
 
 
-    public Optional<Project> getProjectById(UUID uuid) {
-        return repository.findById(uuid);
+    public Optional<Project> getProjectById(UUID IdProject) {
+        return repository.findById(IdProject);
     }
 
 
-    // consulta com usuário logado
+    public Optional<Project> getProjectByIdProjectByUserId(UUID idUser, UUID IdProject) {
+        return repository.getProjectByIdProjectByUserId(idUser, IdProject);
+    }
+
+
     public List<Project> getProjectsByUserForStateBusiness(User user, StateBusiness state) {
         return repository.getProjectsByUserForStateBusiness(user.getId(), state);
-    }
-
-    public List<Project> getProjectsByStateBusiness(StateBusiness state) {
-        return repository.findByStateBusiness(state);
     }
 
 
@@ -54,6 +54,13 @@ public class ProjectService {
         fieldDateClosing(project.getClosingDate());
         projectsEquals(project);
 
+        return repository.save(project);
+    }
+
+    @Transactional
+    public Project update(Project project) {
+        fieldsPrice(project);
+        fieldDateClosing(project.getClosingDate());
         return repository.save(project);
     }
 
@@ -121,11 +128,12 @@ public class ProjectService {
 
     public void projectsEquals(Project project) {
         List<Project> projects = getProjectsByUserForStateBusiness(project.getUser(), StateBusiness.OPEN);
+        System.out.println(projects);
 
         if (!projects.isEmpty()) {
-            Project proj = projects.getFirst();
+            Project projGet = projects.getFirst();
 
-            if (project.getTitle().equals(proj.getTitle()) || project.getDescription().equals(proj.getDescription())) {
+            if (project.getTitle().equals(projGet.getTitle()) || project.getDescription().equals(projGet.getDescription())) {
                 throw new RuntimeException("Já existe um projeto com o mesmo nome ou descrição");
             }
         }

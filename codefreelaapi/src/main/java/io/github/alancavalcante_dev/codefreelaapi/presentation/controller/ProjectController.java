@@ -32,17 +32,17 @@ public class ProjectController {
     private final UserLogged logged;
 
 
-    @GetMapping("{stateBusiness}")
+    @GetMapping
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Pega os projetos do próprio usuário com consulta personalizada")
-    public ResponseEntity<List<ProjectDTO>> getProjectsOpenByUser(@PathVariable String stateBusiness) {
+    public ResponseEntity<List<ProjectDTO>> getProjectsOpenByUser(@RequestParam String stateBusiness) {
         List<Project> projects = service.getProjectsByUserForStateBusiness(logged.load(), StateBusiness.valueOf(stateBusiness));
         if (projects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        List<ProjectDTO> projectDtos = projects.stream().map(mapper::toDTO).toList();
-        return ResponseEntity.ok(projectDtos);
+        List<ProjectDTO> projectsDto = projects.stream().map(mapper::toDTO).toList();
+        return ResponseEntity.ok(projectsDto);
     }
 
 
@@ -65,11 +65,12 @@ public class ProjectController {
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Usuário altera o próprio projeto")
     public ResponseEntity<ProjectDTO> updateProjectByUser(@PathVariable String id, @RequestBody @Valid ProjectDTO dto) {
-        Optional<Project> projectOptional = service.getProjectById(UUID.fromString(id));
+        Optional<Project> projectOptional = service.getProjectByIdProjectByUserId(logged.load().getId(), UUID.fromString(id));
         if (projectOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Project project = projectOptional.get();
+
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
         project.setPriceDay(dto.getPriceDay());
@@ -77,7 +78,7 @@ public class ProjectController {
         project.setPriceProject(dto.getPriceProject());
         project.setClosingDate(dto.getClosingDate());
 
-        Project projectSaved = service.save(project);
+        Project projectSaved = service.update(project);
 
         return ResponseEntity.ok(mapper.toDTO(projectSaved));
     }
@@ -87,7 +88,7 @@ public class ProjectController {
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Usuário deleta o próprio projeto")
     public ResponseEntity<Void> deleteProjectByUser(@PathVariable String id) {
-        Optional<Project> projectOptional = service.getProjectById(UUID.fromString(id));
+        Optional<Project> projectOptional = service.getProjectByIdProjectByUserId(logged.load().getId(), UUID.fromString(id));
         if (projectOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

@@ -16,6 +16,8 @@ import java.util.UUID;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, UUID>, JpaSpecificationExecutor<Project> {
 
+    @Query("Select p From Project p Where p.user.id = :idUser and p.idProject = :IdProject")
+    Optional<Project> getProjectByIdProjectByUserId(UUID idUser, UUID IdProject);
 
     @Query("select p from Project p where p.user.id = :idUserProject and p.stateBusiness = 'WORKING' and p.idProject = :idProject")
     Optional<Project> getStateBusinessWorking(UUID idUserProject, UUID idProject);
@@ -23,7 +25,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID>, JpaSpec
     @Query("select p from Project p where p.user.id = :idUser and p.stateBusiness = :state")
     List<Project> getProjectsByUserForStateBusiness(UUID idUser, StateBusiness state);
 
-    List<Project> findByStateBusiness(StateBusiness state);
+
 
 
 

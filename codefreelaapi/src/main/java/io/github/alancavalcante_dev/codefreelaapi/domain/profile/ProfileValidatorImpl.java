@@ -7,6 +7,7 @@ import io.github.alancavalcante_dev.codefreelaapi.exceptions.CpfExistsException;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.EmailExistsException;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.PortfolioDeveloperRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,13 +48,19 @@ public class ProfileValidatorImpl implements Validate<Profile> {
     }
 
 
+    @Transactional
     public void validatorCreatePortfolioUserDeveloper(Profile profile) {
-        if (profile.getIsDeveloper()) {
-            PortfolioDeveloper portDev = new PortfolioDeveloper();
-            portDev.setPresentation("Olá, me chamo " + profile.getName());
-            portDev.setResume("Seja bem-vindo ao meu portfólio de teste");
-            portDev.setUser(profile.getUser());
-            portfolioDeveloperRepository.save(portDev);
+        Optional<PortfolioDeveloper> portOpt = portfolioDeveloperRepository.getPortfolioDeveloperByIdUser(profile.getUser().getId());
+
+        if (portOpt.isEmpty()) {
+            if (profile.getIsDeveloper()) {
+                PortfolioDeveloper portDev = new PortfolioDeveloper();
+                portDev.setPresentation("Olá, me chamo " + profile.getName());
+                portDev.setResume("Seja bem-vindo ao meu portfólio de teste");
+                portDev.setProfile(profile);
+                portDev.setUser(profile.getUser());
+                portfolioDeveloperRepository.save(portDev);
+            }
         }
     }
 }

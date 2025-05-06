@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -14,5 +15,8 @@ public interface ContainerRepository extends JpaRepository<Container, UUID> {
 
     @Query("select c from Container c where c.projectBusiness.userDeveloper.id = :idUser")
     List<Container> getContainersByIdUser(@Param("idUser") UUID idUser);
+
+    @Query("Select c From Container c Where c.projectBusiness.userDeveloper.id = :idUser and idContainer = :idContainer")
+    Optional<Container> getContainerById(UUID idUser, UUID idContainer);
 
 }
