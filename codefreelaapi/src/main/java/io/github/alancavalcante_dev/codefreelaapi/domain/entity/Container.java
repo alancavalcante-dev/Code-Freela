@@ -19,7 +19,7 @@ public class Container {
 
     /**
      * A classe Container representa o controle de versionamento
-     * e armazenamento dos sistema feitos pelos developers.*
+     * e armazenamento dos sistema feitos pelos developers.
      * Então só é criado um registro se caso o developer e
      * o cliente entre em acordo, essa entidade é startada
      */

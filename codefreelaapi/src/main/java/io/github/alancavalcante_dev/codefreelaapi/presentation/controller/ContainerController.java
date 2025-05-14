@@ -21,9 +21,9 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/user/projects/business/clients")
+@RequestMapping("api/project/container")
 @RequiredArgsConstructor
-@Tag(name = "Negociação de projetos - Match de clients")
+@Tag(name = "Container dos projetos")
 public class ContainerController {
 
 
@@ -62,6 +62,7 @@ public class ContainerController {
         if (containerOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         Container container = containerOpt.get();
         ContainerDetailsDTO containerDetails = new ContainerDetailsDTO(
                 container.getIdContainer().toString(),

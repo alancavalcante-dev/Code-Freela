@@ -3,12 +3,12 @@ package io.github.alancavalcante_dev.codefreelaapi.commom.validate;
 import java.math.BigDecimal;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.TransactionalTypes;
-import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transactions;
+import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transaction;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionValidate {
-    public void validate(Transactions transaction) {
+    public void validate(Transaction transaction) {
         if (transaction.getValue().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Amount must be positive");
         }

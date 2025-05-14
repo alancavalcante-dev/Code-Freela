@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transactions;
-import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.TransactionsService;
+import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transaction;
+import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Transações")
 public class TransactionController {
 
-    private final TransactionsService transactionService;
+    private final TransactionService transactionService;
 
     @PostMapping
     @Operation(summary = "Cadastra uma transação")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Transactions> create(@RequestBody Transactions transaction) {
+    public ResponseEntity<Transaction> create(@RequestBody Transaction transaction) {
         return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
 }
