@@ -7,6 +7,7 @@ import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.Tran
 import io.github.alancavalcante_dev.codefreelaapi.commom.validate.TransactionValidate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

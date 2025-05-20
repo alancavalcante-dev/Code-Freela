@@ -2,6 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.Transaction;
 import io.github.alancavalcante_dev.codefreelaapi.domain.transaction.TransactionService;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final UserLogged logged;
 
     @PostMapping
     @Operation(summary = "Cadastra uma transação")

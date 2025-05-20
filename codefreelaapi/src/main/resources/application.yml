@@ -4,17 +4,31 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
   datasource:
     url: jdbc:postgresql://${URL_BD}/codefreeladb
     username: ${USERNAME_BD}
     password: ${PASSWORD_BD}
     driver-class-name: org.postgresql.Driver
+
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate.format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${USERNAME_EMAIL_SENDER}
+    password: ${PASSWORD_EMAIL_SENDER}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 management:
   server:
@@ -29,3 +43,4 @@ springdoc:
 
 jwt:
   secret: ${JWT_SECRET}
+

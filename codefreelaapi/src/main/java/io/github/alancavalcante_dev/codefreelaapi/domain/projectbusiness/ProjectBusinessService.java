@@ -1,25 +1,25 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
-import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectBusinessRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectBusinessService {
 
 
     private final ProjectBusinessRepository repository;
-    private final ContainerRepository containerRepository;
+
 
 
     public Optional<ProjectBusiness> getByIdProjectBusiness(UUID uuid) {
@@ -46,9 +46,9 @@ public class ProjectBusinessService {
 
 
     @Transactional
-    public ProjectBusiness register(ProjectBusiness project) {
+    public void register(ProjectBusiness project) {
         validatorRegister(project);
-        return repository.save(project);
+        repository.save(project);
     }
 
 
@@ -67,6 +67,8 @@ public class ProjectBusinessService {
 
 
     public void validatorRegister(ProjectBusiness project) {
+        // Se for registro verifica se existe Match duplicado
+
         validateClientVotedOnOwnBusiness(project);
         validateDeveloperQuantityProjectsIsConfirm(project);
         validateMatchesDuplicates(project);
@@ -75,6 +77,8 @@ public class ProjectBusinessService {
 
 
     public void validatorUpdate(ProjectBusiness project) {
+        // Se for atualização não verifica se existe Match duplicado
+
         validateClientVotedOnOwnBusiness(project);
         validateDeveloperQuantityProjectsIsConfirm(project);
         validateMatchesConfirmationCreateContainerProduction(project);
@@ -85,9 +89,8 @@ public class ProjectBusinessService {
     @Transactional
     public void validateMatchesConfirmationCreateContainerProduction(ProjectBusiness project) {
         if (project.isConfirmDeveloper() && project.isConfirmClient()) {
-            Container container = new Container();
-            container.setProjectBusiness(project);
-            containerRepository.save(container);
+            CreateContainerProduction containerProduction = new CreateContainerProduction(project);
+            containerProduction.create();
         }
     }
 
