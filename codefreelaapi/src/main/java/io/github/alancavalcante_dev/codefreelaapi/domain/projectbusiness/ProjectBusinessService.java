@@ -2,6 +2,9 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.notification.NotificationEmailSender;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectBusinessRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,9 @@ public class ProjectBusinessService {
 
 
     private final ProjectBusinessRepository repository;
-
+    private final ContainerRepository containerRepository;
+    private final ProfileRepository profileRepository;
+    private final NotificationEmailSender notification;
 
 
     public Optional<ProjectBusiness> getByIdProjectBusiness(UUID uuid) {
@@ -34,11 +39,9 @@ public class ProjectBusinessService {
         return repository.getByIdProjectBusinessForUserClient(idUser, idProjectBusiness);
     }
 
-
     public List<ProjectBusiness> getAllMatchesBusinessUserDeveloper(User user) {
         return repository.getAllByIdUserDeveloper(user.getId());
     }
-
 
     public List<ProjectBusiness> getAllMatchesBusinessUserClient(User user) {
         return repository.getAllByIdUserClient(user.getId());
@@ -47,17 +50,25 @@ public class ProjectBusinessService {
 
     @Transactional
     public void register(ProjectBusiness project) {
-        validatorRegister(project);
+        // Se for registro verifica se existe Match duplicado
+
+        validateClientVotedOnOwnBusiness(project);
+        validateDeveloperQuantityProjectsIsConfirm(project);
+        validateMatchesDuplicates(project);
+        validateMatchesConfirmationCreateContainerProduction(project);
         repository.save(project);
     }
 
 
     @Transactional
     public ProjectBusiness update(ProjectBusiness project) {
-        validatorUpdate(project);
+        // Se for atualização não verifica se existe Match duplicado
+
+        validateClientVotedOnOwnBusiness(project);
+        validateDeveloperQuantityProjectsIsConfirm(project);
+        validateMatchesConfirmationCreateContainerProduction(project);
         return repository.save(project);
     }
-
 
 
     @Transactional
@@ -66,30 +77,15 @@ public class ProjectBusinessService {
     }
 
 
-    public void validatorRegister(ProjectBusiness project) {
-        // Se for registro verifica se existe Match duplicado
-
-        validateClientVotedOnOwnBusiness(project);
-        validateDeveloperQuantityProjectsIsConfirm(project);
-        validateMatchesDuplicates(project);
-        validateMatchesConfirmationCreateContainerProduction(project);
-    }
-
-
-    public void validatorUpdate(ProjectBusiness project) {
-        // Se for atualização não verifica se existe Match duplicado
-
-        validateClientVotedOnOwnBusiness(project);
-        validateDeveloperQuantityProjectsIsConfirm(project);
-        validateMatchesConfirmationCreateContainerProduction(project);
-    }
-
-
-
     @Transactional
     public void validateMatchesConfirmationCreateContainerProduction(ProjectBusiness project) {
         if (project.isConfirmDeveloper() && project.isConfirmClient()) {
-            CreateContainerProduction containerProduction = new CreateContainerProduction(project);
+            CreateContainerProduction containerProduction = new CreateContainerProduction(
+                    containerRepository,
+                    profileRepository,
+                    notification,
+                    project
+            );
             containerProduction.create();
         }
     }

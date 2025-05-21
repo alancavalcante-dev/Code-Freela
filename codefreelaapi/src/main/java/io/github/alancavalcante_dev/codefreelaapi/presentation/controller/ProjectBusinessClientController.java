@@ -27,7 +27,6 @@ public class ProjectBusinessClientController {
 
 
     private final ProjectBusinessService service;
-    private final ProjectService projectService;
     private final UserLogged logged;
 
 
@@ -64,9 +63,11 @@ public class ProjectBusinessClientController {
             @RequestBody @Valid ProjectBusinessConfirmationDTO request
     ) {
         Optional<ProjectBusiness> projectOpt = service.getByIdProjectBusinessForUserClient(logged.load().getId(), UUID.fromString(id));
+
         if (projectOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         ProjectBusiness proj = projectOpt.get();
         proj.setConfirmClient(request.isConfirmation());
         service.update(proj);

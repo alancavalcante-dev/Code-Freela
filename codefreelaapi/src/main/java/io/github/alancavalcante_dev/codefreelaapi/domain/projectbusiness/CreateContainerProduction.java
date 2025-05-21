@@ -9,29 +9,23 @@ import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.Cont
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Getter
 @Setter
+@Service
+@RequiredArgsConstructor
 public class CreateContainerProduction {
 
-    @Autowired
-    private ContainerRepository containerRepository;
-
-    @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
-    private NotificationEmailSender notification;
-
-    private ProjectBusiness project;
-
-    public CreateContainerProduction(ProjectBusiness project){
-        this.project = project;
-    }
+    private final ContainerRepository containerRepository;
+    private final ProfileRepository profileRepository;
+    private final NotificationEmailSender notification;
+    private final ProjectBusiness project;
 
     @Transactional
     public void create() {

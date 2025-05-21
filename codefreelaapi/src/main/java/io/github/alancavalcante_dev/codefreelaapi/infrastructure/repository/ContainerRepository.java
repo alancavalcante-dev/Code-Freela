@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface ContainerRepository extends JpaRepository<Container, UUID> {
 
     @Query("select c from Container c where c.projectBusiness.userDeveloper.id = :idUser")
-    List<Container> getContainersByIdUser(@Param("idUser") UUID idUser);
+    List<Container> getContainersByIdUser(UUID idUser);
 
     @Query("Select c From Container c Where c.projectBusiness.userDeveloper.id = :idUser and idContainer = :idContainer")
     Optional<Container> getContainerById(UUID idUser, UUID idContainer);

@@ -39,6 +39,7 @@ public class ProjectBusinessDeveloperController {
     @Operation(summary = "Pega todos as negociacoes ou matches do developer")
     public ResponseEntity<List<ProjectBusinessResponseDTO>> getAllMatchesBusinessUserDeveloper() {
         List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserDeveloper(logged.load());
+
         if (listProjects.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -83,7 +84,8 @@ public class ProjectBusinessDeveloperController {
             @PathVariable String id,
             @RequestBody @Valid ProjectBusinessConfirmationDTO request
     ) {
-        Optional<ProjectBusiness> projectOpt = service.getByIdProjectBusinessForUserDeveloper(UUID.fromString(id), UUID.fromString(id));
+        Optional<ProjectBusiness> projectOpt = service.getByIdProjectBusinessForUserDeveloper(logged.load().getId(), UUID.fromString(id));
+
         if (projectOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
