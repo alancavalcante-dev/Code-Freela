@@ -7,12 +7,15 @@ import io.github.alancavalcante_dev.codefreelaapi.exceptions.CpfExistsException;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.EmailExistsException;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.PortfolioDeveloperRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class ProfileValidatorImpl implements Validate<Profile> {
 
@@ -22,6 +25,9 @@ public class ProfileValidatorImpl implements Validate<Profile> {
 
     @Autowired
     private PortfolioDeveloperRepository portfolioDeveloperRepository;
+
+    @Autowired
+    private UserLogged logged;
 
 
     @Override
@@ -50,18 +56,23 @@ public class ProfileValidatorImpl implements Validate<Profile> {
 
     @Transactional
     public void validatorCreatePortfolioUserDeveloper(Profile profile) {
-        Optional<PortfolioDeveloper> portOpt = portfolioDeveloperRepository.getPortfolioDeveloperByIdUser(profile.getUser().getId());
+        if (profile.getIsDeveloper()) {
+            Optional<PortfolioDeveloper> portOpt = portfolioDeveloperRepository.getPortfolioDeveloperByIdUser(logged.load().getId());
 
-        if (portOpt.isEmpty()) {
-            if (profile.getIsDeveloper()) {
-                PortfolioDeveloper portDev = new PortfolioDeveloper();
-                portDev.setPresentation("Olá, me chamo " + profile.getName());
-                portDev.setResume("Seja bem-vindo ao meu portfólio de teste");
-                portDev.setProfile(profile);
-                portDev.setUser(profile.getUser());
-                portfolioDeveloperRepository.save(portDev);
+            if (portOpt.isEmpty()) {
+                if (profile.getIsDeveloper()) {
+                    PortfolioDeveloper portDev = new PortfolioDeveloper();
+                    portDev.setPresentation("Olá, me chamo " + profile.getName());
+                    portDev.setResume("Seja bem-vindo ao meu portfólio de teste");
+                    portDev.setProfile(profile);
+                    portDev.setUser(profile.getUser());
+
+                    portfolioDeveloperRepository.save(portDev);
+                    log.info("Portfólio do usuário criado");
+                }
             }
         }
+
     }
 }
 

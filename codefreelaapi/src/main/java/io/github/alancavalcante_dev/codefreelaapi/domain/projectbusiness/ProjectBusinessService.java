@@ -24,7 +24,9 @@ public class ProjectBusinessService {
     private final ProjectBusinessRepository repository;
     private final ContainerRepository containerRepository;
     private final ProfileRepository profileRepository;
+    private final ProjectBusinessRepository projectBusinessRepository;
     private final NotificationEmailSender notification;
+
 
 
     public Optional<ProjectBusiness> getByIdProjectBusiness(UUID uuid) {
@@ -84,6 +86,7 @@ public class ProjectBusinessService {
                     containerRepository,
                     profileRepository,
                     notification,
+                    projectBusinessRepository,
                     project
             );
             containerProduction.create();

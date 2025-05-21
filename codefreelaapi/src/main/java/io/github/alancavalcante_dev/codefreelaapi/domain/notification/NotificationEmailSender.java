@@ -15,13 +15,16 @@ public class NotificationEmailSender {
     private JavaMailSender javaMailSender;
 
     public void send(String to, String subject, String text) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(to);
+            mailMessage.setSubject(subject);
+            mailMessage.setText(text);
 
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(text);
-
-        javaMailSender.send(mailMessage);
-        log.info("E-mail enviando para {}", to);
+            javaMailSender.send(mailMessage);
+            log.info("E-mail enviado com sucesso para {}", to);
+        } catch (Exception e) {
+            log.error("Erro ao enviar e-mail para {}: {}", to, e.getMessage(), e);
+        }
     }
 }

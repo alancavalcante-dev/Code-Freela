@@ -20,7 +20,7 @@ public class ProjectBusiness {
     @Column(name = "id_project_business")
     private UUID idProjectBusiness;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_project", nullable = false)
     private Project project;
 

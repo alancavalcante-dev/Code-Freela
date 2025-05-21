@@ -54,5 +54,4 @@ public class Profile {
 
     private BigDecimal balance;
 
-
 }

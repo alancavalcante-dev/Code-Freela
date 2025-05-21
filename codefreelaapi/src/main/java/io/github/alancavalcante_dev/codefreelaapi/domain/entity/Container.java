@@ -47,6 +47,7 @@ public class Container {
     @Column(name = "date_created")
     private LocalDate dateCreated;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private StateProject stateProject;
 }
