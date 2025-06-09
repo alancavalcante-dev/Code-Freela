@@ -27,6 +27,7 @@ public class CreateContainerProduction {
     private NotificationEmailSender notification;
     private ProjectBusinessRepository projectBusinessRepository;
     private ProjectBusiness project;
+    private
 
     public CreateContainerProduction(
             ContainerRepository containerRepository,
@@ -65,8 +66,9 @@ public class CreateContainerProduction {
         String subject = "MATCH - Projeto iniciado com sucesso";
 
         notification.send(developer.getEmail(), subject, body);
-        notification.send(client.getEmail(), subject, body);
         log.info("Notificações enviadas");
+
+
     }
 
     public String bodyEmailCreated(Profile Client, Profile developer) {
@@ -74,5 +76,4 @@ public class CreateContainerProduction {
         String bodyDeveloper = "<br>Desenvolvedor: %s".formatted(developer.getName());
         return bodyClient + bodyDeveloper;
     }
-
 }
