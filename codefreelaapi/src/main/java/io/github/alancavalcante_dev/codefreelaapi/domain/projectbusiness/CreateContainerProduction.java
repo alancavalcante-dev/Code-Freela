@@ -5,6 +5,7 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
+import io.github.alancavalcante_dev.codefreelaapi.domain.gitea.GiteaService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.notification.NotificationEmailSender;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
@@ -24,21 +25,19 @@ public class CreateContainerProduction {
 
     private ContainerRepository containerRepository;
     private ProfileRepository profileRepository;
-    private NotificationEmailSender notification;
     private ProjectBusinessRepository projectBusinessRepository;
+    private GiteaService giteaService;
     private ProjectBusiness project;
 
 
     public CreateContainerProduction(
             ContainerRepository containerRepository,
             ProfileRepository profileRepository,
-            NotificationEmailSender notification,
             ProjectBusinessRepository projectBusinessRepository,
             ProjectBusiness project
     ) {
         this.containerRepository = containerRepository;
         this.profileRepository = profileRepository;
-        this.notification = notification;
         this.projectBusinessRepository = projectBusinessRepository;
         this.project = project;
     }
@@ -62,18 +61,6 @@ public class CreateContainerProduction {
         containerRepository.save(container);
         log.info("Container do projeto criado");
 
-        String body = bodyEmailCreated(client, developer);
-        String subject = "MATCH - Projeto iniciado com sucesso";
-
-        notification.send(developer.getEmail(), subject, body);
-        log.info("Notificações enviadas");
-
-
-    }
-
-    public String bodyEmailCreated(Profile Client, Profile developer) {
-        String bodyClient = "Olá,<br>Projeto iniciado pelo colaboradores: <br>Cliente:%s".formatted(Client.getName());
-        String bodyDeveloper = "<br>Desenvolvedor: %s".formatted(developer.getName());
-        return bodyClient + bodyDeveloper;
+        giteaService.createRepository(developer, project.getProject());
     }
 }

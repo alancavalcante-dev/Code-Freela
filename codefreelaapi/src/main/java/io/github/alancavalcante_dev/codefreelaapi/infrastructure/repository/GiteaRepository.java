@@ -13,11 +13,16 @@ import java.util.Map;
 public class GiteaRepository {
 
     @Autowired
-    @Qualifier("giteaJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
-    public List<Map<String, Object>> listarUsuarios() {
-        String sql = "SELECT id, name, email FROM \"user\"";
-        return jdbcTemplate.queryForList(sql);
+    public List<Map<String, Object>> findUserByUsernameAndEmail(String username,String email) {
+        String sql = "SELECT id, name, email FROM \"user\" WHERE name = ? OR email = ?";
+        return jdbcTemplate.queryForList(sql, username, email);
+    }
+
+    public List<Map<String, Object>> findRepository(String nameRepository) {
+        String sql = "SELECT id, name, email FROM \"repository\" WHERE name = ?";
+        return jdbcTemplate.queryForList(sql, nameRepository);
     }
 }
+

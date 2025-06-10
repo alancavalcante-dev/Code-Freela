@@ -85,7 +85,6 @@ public class ProjectBusinessService {
             CreateContainerProduction containerProduction = new CreateContainerProduction(
                     containerRepository,
                     profileRepository,
-                    notification,
                     projectBusinessRepository,
                     project
             );
