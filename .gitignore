@@ -1,5 +1,6 @@
 .env.api
 .env.api.dev
+.env.database.gitea
 .env.app
 .env.database
 .env.gitea

@@ -21,8 +21,7 @@ public class GiteaRepository {
     }
 
     public List<Map<String, Object>> findRepository(String nameRepository) {
-        String sql = "SELECT id, name, email FROM \"repository\" WHERE name = ?";
+        String sql = "SELECT id, name FROM repository WHERE name = ?";
         return jdbcTemplate.queryForList(sql, nameRepository);
     }
 }
-

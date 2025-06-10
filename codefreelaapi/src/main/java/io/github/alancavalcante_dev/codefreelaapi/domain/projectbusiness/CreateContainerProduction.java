@@ -34,11 +34,13 @@ public class CreateContainerProduction {
             ContainerRepository containerRepository,
             ProfileRepository profileRepository,
             ProjectBusinessRepository projectBusinessRepository,
+            GiteaService giteaService,
             ProjectBusiness project
     ) {
         this.containerRepository = containerRepository;
         this.profileRepository = profileRepository;
         this.projectBusinessRepository = projectBusinessRepository;
+        this.giteaService = giteaService;
         this.project = project;
     }
 

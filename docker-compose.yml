@@ -8,19 +8,6 @@ services:
     image: postgres:16.3
     restart: always
     volumes:
-      - gitea_data:/var/lib/postgresql/data
-    networks:
-      - codefreela-network 
-    env_file:
-      - .env.database
-    ports:
-      - 5434:5432
-
-  giteadb:
-    container_name: gitea-db
-    image: postgres:16.3
-    restart: always
-    volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - codefreela-network 
@@ -28,7 +15,6 @@ services:
       - .env.database
     ports:
       - 5434:5432
-
 
   api:
     container_name: codefreela-api
@@ -63,8 +49,35 @@ services:
       - "3000:3000"
       - "222:22"
     depends_on:
-      - gitea-db
-  
+      - db
+
+
+
+volumes:
+  postgres_data:
+  gitea_data:
+
+
+networks:
+  codefreela-network:
+    driver: bridge
+    external: false
+
+
+  # giteadb:
+  #   container_name: gitea-db
+  #   image: postgres:16.3
+  #   restart: always
+  #   volumes:
+  #     - gitea_data:/var/lib/postgresql/data
+  #   networks:
+  #     - codefreela-network 
+  #   env_file:
+  #     - .env.database.gitea
+  #   ports:
+  #     - 5435:5432
+
+
   # app:
   #   container_name: codefreela-client
   #   build: 
@@ -77,13 +90,3 @@ services:
   #     - 5173:5173
   #   expose:
   #     - 5173
-
-volumes:
-  postgres_data:
-  gitea_data:
-
-
-networks:
-  codefreela-network:
-    driver: bridge
-    external: false

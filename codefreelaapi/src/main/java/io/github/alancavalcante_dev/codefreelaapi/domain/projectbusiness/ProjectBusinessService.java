@@ -2,6 +2,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.gitea.GiteaService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.notification.NotificationEmailSender;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
@@ -25,7 +26,7 @@ public class ProjectBusinessService {
     private final ContainerRepository containerRepository;
     private final ProfileRepository profileRepository;
     private final ProjectBusinessRepository projectBusinessRepository;
-    private final NotificationEmailSender notification;
+    private final GiteaService giteaService;
 
 
 
@@ -86,6 +87,7 @@ public class ProjectBusinessService {
                     containerRepository,
                     profileRepository,
                     projectBusinessRepository,
+                    giteaService,
                     project
             );
             containerProduction.create();
