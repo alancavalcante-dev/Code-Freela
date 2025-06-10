@@ -22,7 +22,7 @@ public class GiteaConfiguration {
     @Value("${PASSWORD_ADMIN}")
     private String password;
 
-    @Value("${URL_GITEA}")
+    @Value("${URL_BD_GITEA}")
     private String urlGitea;
 
     @Bean(name = "giteaDataSource")

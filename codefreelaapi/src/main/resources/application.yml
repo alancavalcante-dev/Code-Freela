@@ -1,4 +1,9 @@
 spring:
+
+  config:
+    import:
+      - optional:file:.env.api.dev
+
   application:
     name: codefreelaapi
   output:
@@ -32,11 +37,10 @@ spring:
 
 gitea:
   datasource:
-    url: jdbc:postgresql://localhost:5434/postgres
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${URL_BD_GITEA}/${DATABASE_GITEA}
+    username: ${USERNAME_BD_GITEA}
+    password: ${PASSWORD_BD_GITEA}
     driver-class-name: org.postgresql.Driver
-
 
 management:
   server:
