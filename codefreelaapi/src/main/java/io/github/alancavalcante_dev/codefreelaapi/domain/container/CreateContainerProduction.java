@@ -1,4 +1,4 @@
-package io.github.alancavalcante_dev.codefreelaapi.domain.projectbusiness;
+package io.github.alancavalcante_dev.codefreelaapi.domain.container;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
@@ -6,17 +6,13 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
 import io.github.alancavalcante_dev.codefreelaapi.domain.gitea.GiteaService;
-import io.github.alancavalcante_dev.codefreelaapi.domain.notification.NotificationEmailSender;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ContainerRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProfileRepository;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.ProjectBusinessRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Getter
@@ -49,7 +45,7 @@ public class CreateContainerProduction {
     public void create() {
         Container container = new Container();
 
-        Profile client = profileRepository.getByIdUser(project.getProject().getUser().getId())
+        profileRepository.getByIdUser(project.getProject().getUser().getId())
                 .orElseThrow( () -> new RuntimeException("Perfil do usuário inexistente") );
 
         Profile developer = profileRepository.getByIdUser(project.getUserDeveloper().getId())
