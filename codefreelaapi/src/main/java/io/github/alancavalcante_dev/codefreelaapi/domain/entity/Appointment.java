@@ -12,15 +12,15 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "tbl_work_session")
+@Table(name = "tbl_appointment")
 @EntityListeners(AuditingEntityListener.class)
-public class WorkSession {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_work_session")
+    @Column(name = "id_appointment")
     @JsonIgnore
-    private UUID idWorkSession;
+    private UUID idAppointment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_container", nullable = false)

@@ -35,7 +35,7 @@ public class ContainerController {
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Pega todos os containers do desenvolvedor logado")
     public ResponseEntity<List<ContainerDTO>> getContainersByUser() {
-        List<Container> listContainers = service.getContainersByUser(logged.load());
+        List<Container> listContainers = service.getContainersByUserDeveloper(logged.load());
 
         if (listContainers.isEmpty()) {
             return ResponseEntity.noContent().build();

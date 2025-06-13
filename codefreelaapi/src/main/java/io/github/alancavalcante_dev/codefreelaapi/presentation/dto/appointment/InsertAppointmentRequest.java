@@ -1,8 +1,8 @@
-package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
+package io.github.alancavalcante_dev.codefreelaapi.presentation.dto.appointment;
 
 import java.time.LocalDateTime;
 
-public record WorkSessionRequest(
+public record InsertAppointmentRequest(
         String comment,
         LocalDateTime dateStarting,
         LocalDateTime dateClosing

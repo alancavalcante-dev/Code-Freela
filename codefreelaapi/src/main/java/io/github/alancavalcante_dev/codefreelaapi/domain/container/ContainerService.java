@@ -20,8 +20,12 @@ public class ContainerService {
     private final ContainerRepository repository;
 
 
-    public List<Container> getContainersByUser(User user) {
-        return repository.getContainersByIdUser(user.getId());
+    public List<Container> getContainersByUserDeveloper(User user) {
+        return repository.getContainersByIdUserDeveloper(user.getId());
+    }
+
+    public List<Container> getContainersByUserClient(User user) {
+        return repository.getContainersByUserClient(user.getId());
     }
 
     public Optional<Container> getContainerById(UUID idUser, UUID idContainer) {
