@@ -20,12 +20,9 @@ public class ContainerDetailsDTO {
 
     StateBusiness stateBusiness;
 
-    LocalDate closingDateProject;
-
-    LocalDate closingCreatedContainer;
+    LocalDate dateCreatedContainer;
 
     StateProject stateProject;
 
-    LocalDateTime lastDeploy;
 
 }

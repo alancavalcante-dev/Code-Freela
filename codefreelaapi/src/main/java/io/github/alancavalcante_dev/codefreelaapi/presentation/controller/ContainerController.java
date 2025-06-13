@@ -69,10 +69,8 @@ public class ContainerController {
                 container.getProjectBusiness().getProject().getTitle(),
                 container.getProjectBusiness().getProject().getDescription(),
                 container.getProjectBusiness().getProject().getStateBusiness(),
-                container.getProjectBusiness().getProject().getClosingDate(),
                 container.getDateCreated(),
-                container.getStateProject(),
-                container.getDateLastDeploy()
+                container.getStateProject()
         );
 
         return ResponseEntity.ok(containerDetails);

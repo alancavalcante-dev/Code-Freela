@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -32,16 +34,7 @@ public class Container {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_project_business", nullable = false)
-    private ProjectBusiness projectBusiness;
-
-    @Column(name = "date_last_deploy")
-    private LocalDateTime dateLastDeploy;
-
-    @Column(name = "date_starting")
-    private LocalDateTime dateStarting;
-
-    @Column(name = "date_closing")
-    private LocalDateTime dateClosing;
+    private ProjectBusiness  projectBusiness;
 
     @CreatedDate
     @Column(name = "date_created")
@@ -50,4 +43,7 @@ public class Container {
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private StateProject stateProject;
+
+    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkSession> workSessions = new ArrayList<>();
 }

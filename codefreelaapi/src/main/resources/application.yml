@@ -35,12 +35,6 @@ spring:
           starttls:
             enable: true
 
-#gitea:
-#  datasource:
-#    url: jdbc:postgresql://${URL_BD_GITEA}/${DATABASE_GITEA}
-#    username: ${USERNAME_BD_GITEA}
-#    password: ${PASSWORD_BD_GITEA}
-#    driver-class-name: org.postgresql.Driver
 
 management:
   server:

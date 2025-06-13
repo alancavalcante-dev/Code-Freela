@@ -11,6 +11,7 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.domain.profile.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequestMapping("api/user/profiles")
 @RequiredArgsConstructor
 @Tag(name = "Perfil de usuário")
+@Schema(name = "Perfil de Usuários")
 public class ProfileController {
 
 
