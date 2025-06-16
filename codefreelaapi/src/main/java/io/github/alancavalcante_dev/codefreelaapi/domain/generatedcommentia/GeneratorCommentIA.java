@@ -33,6 +33,7 @@ public class GeneratorCommentIA {
         List<Map<String, Object>> commits = contentPatch.getCommits(username, repository);
         List<String> lastCommitsSha = contentPatch.getLastCommits(commits);
         String patch = contentPatch.getPatchCommits(username, repository, lastCommitsSha);
+
         return prompt.reviewCod(
                 patch,
                 appointment.getComment(),
@@ -40,7 +41,6 @@ public class GeneratorCommentIA {
                 appointment.getDateClosing()
         );
     }
-
 
 }
 
