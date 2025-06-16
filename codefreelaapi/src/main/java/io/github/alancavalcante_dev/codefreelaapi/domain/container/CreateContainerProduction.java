@@ -56,9 +56,9 @@ public class CreateContainerProduction {
 
         container.setProjectBusiness(project);
         container.setStateProject(StateProject.DIDNTSTART);
-        containerRepository.save(container);
+        Container containerSaved = containerRepository.save(container);
         log.info("Container do projeto criado");
 
-        giteaService.createRepository(developer, project.getProject());
+        giteaService.createRepository(developer, project.getProject(), containerSaved);
     }
 }

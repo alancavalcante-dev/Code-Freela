@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.profile;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.core.Validate;
+import io.github.alancavalcante_dev.codefreelaapi.commom.validate.Validate;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.PortfolioDeveloper;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.CpfExistsException;

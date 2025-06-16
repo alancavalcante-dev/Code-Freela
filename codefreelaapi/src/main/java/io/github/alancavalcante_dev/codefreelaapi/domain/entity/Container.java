@@ -31,6 +31,9 @@ public class Container {
     @Column(name = "id_container")
     private UUID idContainer;
 
+    @Column
+    private String name;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_project_business", nullable = false)
     private ProjectBusiness  projectBusiness;

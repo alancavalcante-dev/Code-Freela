@@ -1,13 +1,16 @@
 package io.github.alancavalcante_dev.codefreelaapi.presentation.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.AppointmentService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.ContainerService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Appointment;
+import io.github.alancavalcante_dev.codefreelaapi.domain.generatedcommentia.GeneratorCommentIA;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.appointment.AppointmentsRequests;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +30,7 @@ import java.util.UUID;
 public class AppointmentController {
 
     private final ContainerService containerService;
+    private final AppointmentService appointmentService;
     private final UserLogged logged;
 
     @GetMapping("{id}/appointment")
@@ -56,7 +60,8 @@ public class AppointmentController {
     @Operation(summary = "Todas as marcações relacionada ao projeto consultado - Cliente")
     public ResponseEntity<Appointment> getAppointmentDetails(
             @PathVariable("id") String idProject,
-            @PathVariable("idAppointment") UUID idWorkSession
+            @PathVariable("idAppointment") UUID idAppointment,
+            @PathParam("withCommentIA") boolean withCommentIA
     ) {
         List<Container> containersProjectByUser = containerService.getContainersByUserClient(logged.load())
                 .stream()
@@ -68,11 +73,18 @@ public class AppointmentController {
         }
 
         List<Appointment> appointmentProject = containersProjectByUser.getFirst().getAppointments();
-        List<Appointment> appointmentDetails = appointmentProject.stream().filter(a -> a.getIdAppointment().equals(idWorkSession)).toList();
+        List<Appointment> appointmentDetails = appointmentProject.stream().filter(a -> a.getIdAppointment().equals(idAppointment)).toList();
         if (appointmentDetails.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(appointmentDetails.getFirst());
+        Appointment appointment = appointmentDetails.getFirst();
+        if (withCommentIA) {
+            String commentGenereted = new GeneratorCommentIA(appointment).generete();
+            appointment.setCommentsGeneratedIA(commentGenereted);
+            appointment = appointmentService.saveWorkSession(appointment);
+        }
+
+        return ResponseEntity.ok(appointment);
     }
 }

@@ -19,6 +19,10 @@ public class ContainerService {
 
     private final ContainerRepository repository;
 
+    public void save(Container container) {
+        repository.save(container);
+    }
+
 
     public List<Container> getContainersByUserDeveloper(User user) {
         return repository.getContainersByIdUserDeveloper(user.getId());
