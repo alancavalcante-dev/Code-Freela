@@ -27,12 +27,12 @@ public class Appointment {
     @JsonIgnore
     private Container container;
 
-    @Column(name = "comment", nullable = false)
+    @Column(name = "comment")
     private String comment;
 
     // só pode ser preenchida se houver alteração nos commits entre essas horas de work session
-    @Column(name = "comment_generated_ia", nullable = false)
     @JsonIgnore
+    @Column(name = "comment_generated_ia", length = 10000)
     private String commentsGeneratedIA;
 
     @Column(name = "date_starting", nullable = false)

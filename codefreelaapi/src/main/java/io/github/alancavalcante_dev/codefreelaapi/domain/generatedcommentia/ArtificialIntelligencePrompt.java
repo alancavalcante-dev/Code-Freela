@@ -12,14 +12,11 @@ import java.util.Map;
 @Service
 public class ArtificialIntelligencePrompt {
 
-    @Value("${HOST_IA}")
-    private String HOST_IA;
-
     private final WebClient webClient;
 
-    public ArtificialIntelligencePrompt() {
+    public ArtificialIntelligencePrompt(@Value("${HOST_IA}") String hostIa) {
         this.webClient = WebClient.builder()
-                .baseUrl(HOST_IA)
+                .baseUrl(hostIa)
                 .build();
     }
 

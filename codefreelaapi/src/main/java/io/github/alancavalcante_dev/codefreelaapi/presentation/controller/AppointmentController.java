@@ -4,7 +4,11 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.Appointment
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.ContainerService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Appointment;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.domain.generatedcommentia.GeneratorCommentIA;
+import io.github.alancavalcante_dev.codefreelaapi.domain.notification.NotificationEmailSender;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.ProfileService;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.appointment.AppointmentsRequests;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("api/user/client/project")
 @Schema(name = "Marcação de ponto do projeto")
@@ -31,6 +37,9 @@ public class AppointmentController {
 
     private final ContainerService containerService;
     private final AppointmentService appointmentService;
+    private final GeneratorCommentIA generatorCommentIA;
+    private final NotificationEmailSender notification;
+    private final ProfileService profileService;
     private final UserLogged logged;
 
     @GetMapping("{id}/appointment")
@@ -80,11 +89,22 @@ public class AppointmentController {
 
         Appointment appointment = appointmentDetails.getFirst();
         if (withCommentIA) {
-            String commentGenereted = new GeneratorCommentIA(appointment).generete();
-            appointment.setCommentsGeneratedIA(commentGenereted);
+            String commentGenerated = generatorCommentIA.generate(appointment);
+            appointment.setCommentsGeneratedIA(commentGenerated);
             appointment = appointmentService.saveWorkSession(appointment);
+            senderEmailComments(appointment.getUser());
         }
 
         return ResponseEntity.ok(appointment);
+    }
+
+
+    public void senderEmailComments(User user) {
+        String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para verificar: (link)";
+
+        Profile profile = profileService.getProfileByIdUser(user)
+                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+
+        notification.send(profile.getEmail(), "CodeFreela - Comentário da IA gerada", htmlText);
     }
 }
