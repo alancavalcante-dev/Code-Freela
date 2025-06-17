@@ -1,4 +1,4 @@
-# 💼 CodeFreela - Plataforma de Conexão entre Clientes e Desenvolvedores
+# 💻 CodeFreela - Plataforma de Conexão entre Clientes e Desenvolvedores
 
 O **CodeFreela** é uma plataforma fullstack baseada em containers Docker que conecta **clientes** e **desenvolvedores** para colaboração em projetos. Com integração ao **Gitea** (GitHub self-hosted), controle de ponto dos desenvolvedores, e análise automática via IA, a plataforma visa automatizar todo o ciclo de vida de um projeto freelance e comunicação flexivel e 
 clara entre o desenvolvedor e o cliente.
@@ -51,6 +51,7 @@ Todos os containers se comunicam por meio da rede Docker `codefreela-network`.
 * Cadastro e login de usuários
 * CRUD de portfólios, projetos, perfis, negociações
 * Integração com Gitea (usuário + repositório)
+* Integração com Inteligência Artifical Ollama (deepseek model)
 * Pesquisa pública de projetos com suporte a Specifications (Spring)
 
 ---
@@ -64,7 +65,7 @@ git clone https://github.com/alancavalcante-dev/Code-Freela.git
 cd codefreela
 ```
 
-### 2. Crie os arquivos `.env`
+### 2. Crie o arquivo `.env`
 
 ```env
 POSTGRES_USER=preencher
@@ -101,16 +102,20 @@ docker-compose up -d --build
 
 ## 🧪 Futuras Implementações
 
-| Funcionalidade                                                    | Status |
-| ----------------------------------------------------------------- | ------ |
-| Pagamento antecipado para começar o projeto (dev)                 | 🔜     |
-| Chat cliente <-> desenvolvedor (para negociação e após)           | 🔜     |
-| Chatbot de entrada com redirecionamento                           | 🔜     |
-| Cache de dados do chatbot via Redis                               | 🔜     |
-| Integração com Google OAuth2                                      | 🔜     |
-| Deploy automático temporário de projeto (10 min via Docker Swarm) | 🔜     |
-| Frontend completo com React                                       | 🔜     |
-| Integração com API do PayPal para pagamentos                      | 🔜     |
+| Funcionalidade                                                       | Status |
+|----------------------------------------------------------------------| ------ |
+| Pagamento antecipado para começar o projeto (dev)                    | 🔜     |
+| Chat cliente <-> desenvolvedor (para negociação e após)              | 🔜     |
+| Chatbot de entrada com redirecionamento                              | 🔜     |
+| Cache de dados do chatbot via Redis                                  | 🔜     |
+| Integração com Google OAuth2                                         | 🔜     |
+| Deploy automático temporário de projeto (10 min via Docker Swarm)    | 🔜     |
+| Frontend completo com React                                          | 🔜     |
+| Integração com API do PayPal para pagamentos                         | 🔜     |
+| Refatorar geração de comentário IA para modelo Assíncrono (async)    | 🔜     |
+| Querys mais leves e robustas para otimizar e tirar código redundante | 🔜     |
+| Refatorar mapeamentos de objetos usando MapperStruct ou Reflection   | 🔜     |
+| Implementar exceptions para erros omitidos                           | 🔜     |
 
 ---
 
@@ -154,13 +159,35 @@ codefreela/
 
 ---
 
+## 🗂️ Organização das Tarefas
+
+A organização das tarefas do projeto foi realizada com base no modelo **Kanban**, utilizando o Trello para visualizar e acompanhar o progresso do desenvolvimento. As colunas representam os diferentes estágios do fluxo de trabalho, como:
+
+* **Backlog**: ideias e funcionalidades planejadas;
+* **Em andamento**: tarefas que estão sendo implementadas;
+* **Concluído**: funcionalidades finalizadas;
+* **Correção e Planejamento futuro**: para bugs e melhorias estruturais.
+
+Essa abordagem ajudou a manter o controle e a transparência no ciclo de desenvolvimento, mesmo sendo um projeto individual.
+
+---
+
 ## 👨‍💻 Autor
 
-Desenvolvido por **Alan Pereira**
-Contato: [github.com/alancavalcante-dev](https://github.com/alancavalcante-dev)
+Desenvolvido por **Alan Pereira Cavalcante**
+<br>
+<br>
+Linkedln: [linkedln.com/alan-pereira-dev](https://www.linkedin.com/in/alan-pereira-dev/)<br>
+E-mail: alan.cavalcante.dev@gmail.com <br>
+Celular: +55 (11) 986815754
 
 ---
 
 ## 📄 Licença
 
 Este projeto está licenciado sob a Licença **MIT** apenas para fins de **visualização e estudo**. Para reutilização do código, entre em contato com o autor. Esse projeto está sendo feito com objetivo de estudos e aprendizado.
+
+
+
+
+
