@@ -92,19 +92,20 @@ public class AppointmentController {
             String commentGenerated = generatorCommentIA.generate(appointment);
             appointment.setCommentsGeneratedIA(commentGenerated);
             appointment = appointmentService.saveWorkSession(appointment);
-            senderEmailComments(appointment.getUser());
+            senderEmailComments();
         }
 
         return ResponseEntity.ok(appointment);
     }
 
 
-    public void senderEmailComments(User user) {
-        String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para verificar: (link)";
+    public void senderEmailComments() {
+        String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para visualizar: (link)";
 
-        Profile profile = profileService.getProfileByIdUser(user)
+        Profile profile = profileService.getProfileByIdUser(logged.load())
                 .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
 
         notification.send(profile.getEmail(), "CodeFreela - Comentário da IA gerada", htmlText);
     }
+
 }
