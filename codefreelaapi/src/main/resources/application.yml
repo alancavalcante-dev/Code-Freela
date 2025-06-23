@@ -1,5 +1,8 @@
 spring:
 
+  threads:
+    enabled: true
+
   config:
     import:
       - optional:file:.env.api.dev

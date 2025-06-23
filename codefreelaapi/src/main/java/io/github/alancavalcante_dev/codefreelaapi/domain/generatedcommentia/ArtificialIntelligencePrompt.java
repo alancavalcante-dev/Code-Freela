@@ -1,12 +1,13 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.generatedcommentia;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -20,7 +21,8 @@ public class ArtificialIntelligencePrompt {
                 .build();
     }
 
-    public String reviewCod(String code, String comment, LocalDateTime starting, LocalDateTime closing) {
+    @Async
+    public CompletableFuture<String> reviewCod(String code, String comment, LocalDateTime starting, LocalDateTime closing) {
         Map<String, Object> payload = Map.of(
                 "model", "deepseek-coder",
                 "prompt", """
@@ -36,12 +38,12 @@ public class ArtificialIntelligencePrompt {
                 "stream", false
         );
 
-        return webClient.post()
+        return CompletableFuture.completedFuture(webClient.post()
                 .uri("/api/generate")
                 .bodyValue(payload)
                 .retrieve()
                 .bodyToMono(Map.class)
                 .map(resp -> (String) resp.get("response"))
-                .block();
+                .block());
     }
 }

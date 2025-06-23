@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RestController
@@ -71,7 +73,7 @@ public class AppointmentController {
             @PathVariable("id") String idProject,
             @PathVariable("idAppointment") UUID idAppointment,
             @PathParam("withCommentIA") boolean withCommentIA
-    ) {
+    ) throws ExecutionException, InterruptedException {
         List<Container> containersProjectByUser = containerService.getContainersByUserClient(logged.load())
                 .stream()
                 .filter(c -> c.getProjectBusiness().getProject().getIdProject().equals(UUID.fromString(idProject)))
@@ -89,11 +91,16 @@ public class AppointmentController {
 
         Appointment appointment = appointmentDetails.getFirst();
         if (withCommentIA) {
-            String commentGenerated = generatorCommentIA.generate(appointment);
-            appointment.setCommentsGeneratedIA(commentGenerated);
-            appointment = appointmentService.saveWorkSession(appointment);
-            senderEmailComments();
+            generatorCommentIA.generate(appointment)
+                    .thenApply(comment -> {
+                        appointment.setCommentsGeneratedIA(comment);
+                        return appointmentService.saveWorkSession(appointment);
+                    })
+                    .thenAccept(savedAppointment -> {
+                        senderEmailComments();
+                    });
         }
+
 
         return ResponseEntity.ok(appointment);
     }

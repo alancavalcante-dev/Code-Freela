@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 @Slf4j
@@ -17,10 +18,12 @@ public class GeneratorCommentIA {
     @Autowired
     private ContentPatchCommit contentPatch;
 
+
     @Autowired
     private ArtificialIntelligencePrompt prompt;
 
-    public String generate(Appointment appointment) {
+
+    public CompletableFuture<String> generate(Appointment appointment) {
         String username = appointment.getUser().getUsername();
         String repository = appointment.getContainer().getName();
 

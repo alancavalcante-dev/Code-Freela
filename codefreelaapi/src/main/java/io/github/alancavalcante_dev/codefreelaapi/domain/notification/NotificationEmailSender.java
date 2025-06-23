@@ -4,6 +4,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.notification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,7 +16,10 @@ public class NotificationEmailSender {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Async
     public void send(String to, String subject, String htmlContent) {
+        System.out.println("Thread: " + Thread.currentThread().getName());
+
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
