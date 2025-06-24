@@ -2,7 +2,6 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.profile.controller;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Address;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.dto.AddressDTO;
-import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileInsertRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileResponseDTO;
 import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileUpdateRequestDTO;
 import io.github.alancavalcante_dev.codefreelaapi.mapper.ProfileMapper;
@@ -44,19 +43,6 @@ public class ProfileController {
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
-
-    @PostMapping
-    @Operation(summary = "Cadastra um perfil")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Void> registerMyProfile(@RequestBody @Valid ProfileInsertRequestDTO profile) {
-        Profile entity = mapper.toEntity(profile);
-        Profile saved = service.register(entity);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(saved.getIdProfile()).toUri();
-
-        return ResponseEntity.created(location).build();
-    }
 
 
     @PutMapping

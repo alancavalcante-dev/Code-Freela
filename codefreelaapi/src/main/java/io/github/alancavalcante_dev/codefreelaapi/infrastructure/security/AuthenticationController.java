@@ -25,9 +25,7 @@ public class AuthenticationController {
 
 
     private final AuthenticationManager authenticationManager;
-
     private final UserRepository repository;
-
     private final TokenService tokenService;
 
 
@@ -57,8 +55,9 @@ public class AuthenticationController {
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, UserRole.USER);
-
+        UserRole result = data.profile().getIsDeveloper() ? UserRole.DEVELOPER : UserRole.CLIENT;
+        User newUser = new User(data.login(), encryptedPassword, result);
+        newUser.setProfile(data.dtoToEntity());
         repository.save(newUser);
 
         return ResponseEntity.ok().build();

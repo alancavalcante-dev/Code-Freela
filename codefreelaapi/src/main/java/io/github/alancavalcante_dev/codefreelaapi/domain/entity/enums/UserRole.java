@@ -1,8 +1,10 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums;
 
 public enum UserRole {
-    ADMIN("admin"),
-    USER("user");
+    CLIENT("CLIENT"),
+    DEVELOPER("developer"),
+    ADMIN("admin");
+
 
     private String role;
 

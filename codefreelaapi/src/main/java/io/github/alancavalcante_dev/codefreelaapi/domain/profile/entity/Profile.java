@@ -50,8 +50,7 @@ public class Profile {
     @JoinColumn(name = "id_address")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_user")
+    @OneToOne(mappedBy = "profile")
     private User user;
 
     private BigDecimal balance;

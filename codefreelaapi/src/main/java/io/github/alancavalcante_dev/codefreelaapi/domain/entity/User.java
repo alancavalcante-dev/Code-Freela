@@ -1,6 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.UserRole;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity(name = "tbl_users")
 @Table(name = "tbl_users")
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
@@ -27,6 +29,10 @@ public class User implements UserDetails {
     private String password;
     private UserRole role;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_profile")
+    private Profile profile;
+
     public User(String login, String password, UserRole role){
         this.login = login;
         this.password = password;
@@ -35,8 +41,15 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return switch (this.role) {
+            case ADMIN -> List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_DEVELOPER"),
+                    new SimpleGrantedAuthority("ROLE_CLIENT")
+            );
+            case DEVELOPER -> List.of(new SimpleGrantedAuthority("ROLE_DEVELOPER"));
+            case CLIENT -> List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        };
     }
 
     @Override
