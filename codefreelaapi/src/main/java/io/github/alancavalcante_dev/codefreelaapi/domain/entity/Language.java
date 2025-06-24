@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.entity;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity.PortfolioDeveloper;
 import jakarta.persistence.*;
 import lombok.Data;
 

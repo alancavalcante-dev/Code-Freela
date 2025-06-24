@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository;
 
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Project;
+import io.github.alancavalcante_dev.codefreelaapi.domain.project.entity.Project;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateBusiness;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

@@ -1,9 +1,9 @@
 package io.github.alancavalcante_dev.codefreelaapi.mapper;
 
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileInsertRequestDTO;
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileResponseDTO;
-import io.github.alancavalcante_dev.codefreelaapi.presentation.dto.profile.ProfileUpdateRequestDTO;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileInsertRequestDTO;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileResponseDTO;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileUpdateRequestDTO;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

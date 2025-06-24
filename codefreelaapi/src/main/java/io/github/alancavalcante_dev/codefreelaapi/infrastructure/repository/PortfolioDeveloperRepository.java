@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.PortfolioDeveloper;
+import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity.PortfolioDeveloper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

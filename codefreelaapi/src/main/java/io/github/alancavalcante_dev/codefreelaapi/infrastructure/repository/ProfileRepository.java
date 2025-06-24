@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Profile;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {

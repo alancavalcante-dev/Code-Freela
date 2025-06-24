@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Appointment;
+import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
