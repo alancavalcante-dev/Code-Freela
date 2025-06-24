@@ -33,7 +33,7 @@ public class ProjectController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Pega os projetos do próprio usuário com consulta personalizada")
     public ResponseEntity<List<ProjectDTO>> getProjectsOpenByUser(@RequestParam String stateBusiness) {
         List<Project> projects = service.getProjectsByUserForStateBusiness(logged.load(), StateBusiness.valueOf(stateBusiness));
@@ -47,7 +47,7 @@ public class ProjectController {
 
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Usuário cadastra um projeto")
     public ResponseEntity<Void> registerProjectByUser(@RequestBody @Valid ProjectDTO dto) {
         Project project = mapper.toEntity(dto);
@@ -62,7 +62,7 @@ public class ProjectController {
 
 
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Usuário altera o próprio projeto")
     public ResponseEntity<ProjectDTO> updateProjectByUser(@PathVariable String id, @RequestBody @Valid ProjectDTO dto) {
         Optional<Project> projectOptional = service.getProjectByIdProjectByUserId(logged.load().getId(), UUID.fromString(id));
@@ -85,7 +85,7 @@ public class ProjectController {
 
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Usuário deleta o próprio projeto")
     public ResponseEntity<Void> deleteProjectByUser(@PathVariable String id) {
         Optional<Project> projectOptional = service.getProjectByIdProjectByUserId(logged.load().getId(), UUID.fromString(id));

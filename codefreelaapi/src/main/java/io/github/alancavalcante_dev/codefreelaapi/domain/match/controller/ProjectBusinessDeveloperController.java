@@ -23,7 +23,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/user/projects/business/developer")
+@RequestMapping("api/developer/projects/business")
 @RequiredArgsConstructor
 @Tag(name = "Negociação de projetos - Match de developer")
 public class ProjectBusinessDeveloperController {
@@ -35,7 +35,7 @@ public class ProjectBusinessDeveloperController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Pega todos as negociacoes ou matches do developer")
     public ResponseEntity<List<ProjectBusinessResponseDTO>> getAllMatchesBusinessUserDeveloper() {
         List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserDeveloper(logged.load());
@@ -59,7 +59,7 @@ public class ProjectBusinessDeveloperController {
 
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Cadastra um Match em um projeto")
     public ResponseEntity<Void> matchBusiness(@RequestBody @Valid ProjectBusinessDTO request) {
         Optional<Project> projOpt = projectService.getProjectById(UUID.fromString(request.getIdProject()));
@@ -78,7 +78,7 @@ public class ProjectBusinessDeveloperController {
 
 
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Altera o próprio match")
     public ResponseEntity<Void> updateMatch(
             @PathVariable String id,
@@ -97,7 +97,7 @@ public class ProjectBusinessDeveloperController {
 
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Usuário developer deleta o próprio match")
     public ResponseEntity<Void> deleteMatch(@PathVariable String id) {
         Optional<ProjectBusiness> projectOptional = service.getByIdProjectBusiness(UUID.fromString(id));

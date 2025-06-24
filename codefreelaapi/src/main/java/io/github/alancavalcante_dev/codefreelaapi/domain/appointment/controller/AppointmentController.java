@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RestController
-@RequestMapping("api/user/client/project")
+@RequestMapping("api/client/project")
 @Schema(name = "Marcação de ponto do projeto")
 @Tag(name = "Marcação de ponto do projeto")
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class AppointmentController {
     private final UserLogged logged;
 
     @GetMapping("{id}/appointment")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Todas as marcações relacionada ao projeto consultado - Cliente")
     public ResponseEntity<List<AppointmentsRequests>> getAllAppointmentByProject(@PathVariable("id") String idProject) {
 
@@ -65,13 +65,14 @@ public class AppointmentController {
 
 
     @GetMapping("{id}/appointment/{idAppointment}/details")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Todas as marcações relacionada ao projeto consultado - Cliente")
     public ResponseEntity<Appointment> getAppointmentDetails(
             @PathVariable("id") String idProject,
             @PathVariable("idAppointment") UUID idAppointment,
             @PathParam("withCommentIA") boolean withCommentIA
     ) throws ExecutionException, InterruptedException {
+
         List<Container> containersProjectByUser = containerService.getContainersByUserClient(logged.load())
                 .stream()
                 .filter(c -> c.getProjectBusiness().getProject().getIdProject().equals(UUID.fromString(idProject)))
@@ -89,18 +90,22 @@ public class AppointmentController {
 
         Appointment appointment = appointmentDetails.getFirst();
         if (withCommentIA) {
-            generatorCommentIA.generate(appointment)
-                    .thenApply(comment -> {
-                        appointment.setCommentsGeneratedIA(comment);
-                        return appointmentService.saveWorkSession(appointment);
-                    })
-                    .thenAccept(savedAppointment -> {
-                        senderEmailComments();
-                    });
+            this.generatorCommentIA(appointment);
         }
 
-
         return ResponseEntity.ok(appointment);
+    }
+
+
+    public void generatorCommentIA(Appointment appointment) {
+        generatorCommentIA.generate(appointment)
+                .thenApply(comment -> {
+                    appointment.setCommentsGeneratedIA(comment);
+                    return appointmentService.saveWorkSession(appointment);
+                })
+                .thenAccept(savedAppointment -> {
+                    senderEmailComments();
+                });
     }
 
 

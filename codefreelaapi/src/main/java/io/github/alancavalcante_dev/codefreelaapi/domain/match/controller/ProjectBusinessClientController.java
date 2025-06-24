@@ -19,7 +19,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/user/projects/business/client")
+@RequestMapping("api/client/projects/business")
 @RequiredArgsConstructor
 @Tag(name = "Negociação de projetos - Match de clients")
 public class ProjectBusinessClientController {
@@ -30,7 +30,7 @@ public class ProjectBusinessClientController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Pega todos as negociacoes ou matches do client")
     public ResponseEntity<List<ProjectBusinessResponseClientDTO>> getAllMatchesBusinessUserClient() {
         List<ProjectBusiness> listProjects = service.getAllMatchesBusinessUserClient(logged.load());
@@ -55,7 +55,7 @@ public class ProjectBusinessClientController {
 
 
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @Operation(summary = "Altera o match")
     public ResponseEntity<Void> updateMatch(
             @PathVariable String id,

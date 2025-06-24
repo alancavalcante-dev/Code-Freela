@@ -36,6 +36,7 @@ public class PortfolioDeveloperController {
         dto.setPresentation(port.getPresentation());
         dto.setResume(port.getResume());
         dto.setLanguages(port.getLanguages());
+
         return ResponseEntity.ok(dto);
     }
 

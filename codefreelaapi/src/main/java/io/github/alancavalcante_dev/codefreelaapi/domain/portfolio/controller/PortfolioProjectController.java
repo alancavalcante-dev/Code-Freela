@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ public class PortfolioProjectController {
 
 
     @GetMapping("{id}")
+    @PreAuthorize("anyRole('CLIENT, DEVELOPER')")
     @Operation(summary = "Pega projeto especifico para ver detalhes")
     public ResponseEntity<ProjectDTO> getByIdProjectChosen(@PathVariable String id) {
         return service.getProjectById(UUID.fromString(id))

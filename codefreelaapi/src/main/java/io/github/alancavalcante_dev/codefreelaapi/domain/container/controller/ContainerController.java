@@ -32,7 +32,7 @@ public class ContainerController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Pega todos os containers do desenvolvedor logado")
     public ResponseEntity<List<ContainerDTO>> getContainersByUser() {
         List<Container> listContainers = service.getContainersByUserDeveloper(logged.load());
@@ -54,7 +54,7 @@ public class ContainerController {
 
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Consulta Container por ID com usuário logado")
     public ResponseEntity<ContainerDetailsDTO> getContainerByUserAndIdContainer(@PathVariable String id) {
         Optional<Container> containerOpt = service.getContainerById(logged.load().getId(), UUID.fromString(id));

@@ -7,18 +7,20 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.dto.Portfolio
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/portfolio/developers/me")
+@RequestMapping("api/portfolio/developer/me")
 public class PortfolioDeveloperMeController {
 
     private final PortfolioDeveloperService service;
     private final UserLogged logged;
 
+    @PreAuthorize("hasRole('DEVELOPER')")
     @GetMapping
     public ResponseEntity<PortfolioDeveloperDTO> getPortfolioDeveloperByUserLogged() {
         Optional<PortfolioDeveloper> developer = service.getPortfolioDeveloperByIdDeveloper(logged.load().getId());
@@ -37,6 +39,7 @@ public class PortfolioDeveloperMeController {
         return ResponseEntity.ok(dto);
     }
 
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PutMapping
     public ResponseEntity<PortfolioDeveloperDTO> updatePortfolioDeveloperByUserLogged(
             @RequestBody @Valid PortfolioDeveloperDTO data) {

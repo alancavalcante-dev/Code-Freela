@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+
+
 @RestController
-@RequestMapping("api/user/developer/project")
+@RequestMapping("api/developer/project")
 @Schema(name = "Marcação de ponto do projeto")
 @Tag(name = "Marcação de ponto do projeto")
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class AppointmentDeveloperController {
 
 
     @GetMapping("{id}/appointment")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Todas as marcações relacionada ao projeto consultado")
     public ResponseEntity<List<Appointment>> getAllAppointmentByProject(@PathVariable("id") String idProject) {
 

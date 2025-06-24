@@ -1,6 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.commom.notification;
 
 
+import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +18,7 @@ public class NotificationEmailSender {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void send(String to, String subject, String htmlContent) {
+    public void send(@Email String to, String subject, String htmlContent) {
         System.out.println("Thread: " + Thread.currentThread().getName());
 
         try {
