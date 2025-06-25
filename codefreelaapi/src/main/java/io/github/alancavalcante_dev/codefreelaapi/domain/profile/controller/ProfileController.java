@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/user/profiles")
+@RequestMapping("api/user/profile")
 @RequiredArgsConstructor
 @Tag(name = "Perfil de usuário")
 @Schema(name = "Perfil de Usuários")
@@ -36,7 +36,7 @@ public class ProfileController {
 
     @GetMapping
     @Operation(summary = "Consulta o próprio perfil")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'DEVELOPER')")
     public ResponseEntity<ProfileResponseDTO> getMyProfile() {
         return service.getProfileByIdUser(logged.load())
                 .map(p -> ResponseEntity.ok(mapper.toResponseDTO(p)))
@@ -47,7 +47,7 @@ public class ProfileController {
 
     @PutMapping
     @Operation(summary = "Altera o próprio perfil")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'DEVELOPER')")
     public ResponseEntity<ProfileResponseDTO> updateProfile( @RequestBody @Valid ProfileUpdateRequestDTO data) {
 
         Optional<Profile> profileOpt = service.getProfileByIdUser(logged.load());

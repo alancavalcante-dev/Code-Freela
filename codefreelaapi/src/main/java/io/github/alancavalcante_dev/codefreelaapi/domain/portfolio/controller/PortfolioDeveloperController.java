@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/portfolio/developers")
+@RequestMapping("api/portfolio/developer")
 public class PortfolioDeveloperController {
 
 

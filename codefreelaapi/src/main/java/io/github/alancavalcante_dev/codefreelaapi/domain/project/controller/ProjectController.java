@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/user/projects")
+@RequestMapping("api/client/projects")
 @RequiredArgsConstructor
 @Tag(name = "Projetos do usuário")
 public class ProjectController {

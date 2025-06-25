@@ -29,14 +29,6 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
 
-    @GetMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = repository.findAll();
-        return ResponseEntity.ok(users);
-    }
-
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -62,4 +54,5 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
     }
+
 }

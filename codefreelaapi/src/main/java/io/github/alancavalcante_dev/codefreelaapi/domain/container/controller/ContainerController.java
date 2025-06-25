@@ -21,7 +21,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/project/container")
+@RequestMapping("api/developer/project/container")
 @RequiredArgsConstructor
 @Tag(name = "Container dos projetos")
 public class ContainerController {

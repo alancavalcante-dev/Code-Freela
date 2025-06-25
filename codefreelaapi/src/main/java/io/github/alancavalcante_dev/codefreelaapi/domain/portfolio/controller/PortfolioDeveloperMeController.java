@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/portfolio/developer/me")
+@RequestMapping("api/developer/portfolio/me")
 public class PortfolioDeveloperMeController {
 
     private final PortfolioDeveloperService service;

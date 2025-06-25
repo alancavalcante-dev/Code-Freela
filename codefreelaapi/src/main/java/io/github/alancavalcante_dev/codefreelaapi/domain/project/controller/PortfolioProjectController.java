@@ -1,8 +1,7 @@
-package io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.controller;
+package io.github.alancavalcante_dev.codefreelaapi.domain.project.controller;
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.entity.Project;
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.service.ProjectService;
-import io.github.alancavalcante_dev.codefreelaapi.domain.project.controller.ProjectSpecification;
 import io.github.alancavalcante_dev.codefreelaapi.mapper.ProjectMapper;
 import io.github.alancavalcante_dev.codefreelaapi.domain.project.dto.ProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,6 @@ public class PortfolioProjectController {
 
 
     @GetMapping("{id}")
-    @PreAuthorize("anyRole('CLIENT, DEVELOPER')")
     @Operation(summary = "Pega projeto especifico para ver detalhes")
     public ResponseEntity<ProjectDTO> getByIdProjectChosen(@PathVariable String id) {
         return service.getProjectById(UUID.fromString(id))

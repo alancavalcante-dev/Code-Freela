@@ -4,6 +4,7 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.service.App
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.service.ContainerService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.artificialintelligence.GeneratorCommentIA;
 import io.github.alancavalcante_dev.codefreelaapi.commom.notification.NotificationEmailSender;
@@ -30,8 +31,8 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @RestController
 @RequestMapping("api/client/project")
-@Schema(name = "Marcação de ponto do projeto")
-@Tag(name = "Marcação de ponto do projeto")
+@Schema(name = "Marcação de ponto do projeto - Cliente")
+@Tag(name = "Marcação de ponto do projeto - Cliente")
 @RequiredArgsConstructor
 public class AppointmentController {
 
@@ -39,7 +40,6 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final GeneratorCommentIA generatorCommentIA;
     private final NotificationEmailSender notification;
-    private final ProfileService profileService;
     private final UserLogged logged;
 
     @GetMapping("{id}/appointment")
@@ -72,8 +72,8 @@ public class AppointmentController {
             @PathVariable("idAppointment") UUID idAppointment,
             @PathParam("withCommentIA") boolean withCommentIA
     ) throws ExecutionException, InterruptedException {
-
-        List<Container> containersProjectByUser = containerService.getContainersByUserClient(logged.load())
+        User user = logged.load();
+        List<Container> containersProjectByUser = containerService.getContainersByUserClient(user)
                 .stream()
                 .filter(c -> c.getProjectBusiness().getProject().getIdProject().equals(UUID.fromString(idProject)))
                 .toList();
@@ -89,33 +89,35 @@ public class AppointmentController {
         }
 
         Appointment appointment = appointmentDetails.getFirst();
-        if (withCommentIA) {
-            this.generatorCommentIA(appointment);
+        if (withCommentIA && appointment.getCommentsGeneratedIA() == null) {
+            this.generatorCommentIA(appointment, user.getProfile().getEmail());
         }
 
         return ResponseEntity.ok(appointment);
     }
 
 
-    public void generatorCommentIA(Appointment appointment) {
+    public void generatorCommentIA(Appointment appointment, String email) {
         generatorCommentIA.generate(appointment)
                 .thenApply(comment -> {
                     appointment.setCommentsGeneratedIA(comment);
                     return appointmentService.saveWorkSession(appointment);
                 })
                 .thenAccept(savedAppointment -> {
-                    senderEmailComments();
+                    senderEmailComments(email); // passe o appointment
+                })
+                .exceptionally(ex -> {
+                    log.error("Erro ao gerar comentário IA e/ou enviar email", ex);
+                    return null;
                 });
     }
 
 
-    public void senderEmailComments() {
+    public void senderEmailComments(String email) {
         String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para visualizar: (link)";
 
-        Profile profile = profileService.getProfileByIdUser(logged.load())
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
-
-        notification.send(profile.getEmail(), "CodeFreela - Comentário da IA gerada", htmlText);
+        notification.send(email, "CodeFreela - Comentário da IA gerada", htmlText);
+        log.info("E-mail enviado do comentário por IA gerada");
     }
 
 }

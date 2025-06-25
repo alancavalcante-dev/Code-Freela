@@ -32,8 +32,6 @@ public class Appointment {
     @Column(name = "comment")
     private String comment;
 
-    // só pode ser preenchida se houver alteração nos commits entre essas horas de work session
-    @JsonIgnore
     @Column(name = "comment_generated_ia", length = 10000)
     private String commentsGeneratedIA;
 
