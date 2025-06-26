@@ -74,8 +74,13 @@ public class ContainerController {
 
         Container container = containerOpt.get();
 
-        List<AppointmentDate> appointmentList = container.getAppointments()
+        List<Appointment> appointments = container.getAppointments();
+
+        String comment = appointments.isEmpty() ? null : appointments.getLast().getComment();
+
+        List<AppointmentDate> appointmentList = appointments
                 .stream().map(a -> new AppointmentDate(a.getDateStarting(), a.getDateClosing())).toList();
+
 
         ProjectBusiness match = container.getProjectBusiness();
         Project project = match.getProject();
@@ -102,9 +107,12 @@ public class ContainerController {
                 container.getDateCreated(),
                 container.getStateProject(),
                 appointmentList,
+                comment,
 
                 profileClient,
                 profileDeveloper
+
+
         );
 
         return ResponseEntity.ok(containerDetails);

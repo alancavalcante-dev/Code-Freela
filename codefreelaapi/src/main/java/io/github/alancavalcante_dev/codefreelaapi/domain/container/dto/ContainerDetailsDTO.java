@@ -35,7 +35,10 @@ public record ContainerDetailsDTO(
 
         List<AppointmentDate> appointments,
 
+        String lastCommentDeveloper,
+
         ProfileDataSimpleDTO client,
 
         ProfileDataSimpleDTO developer
+
 ){ }

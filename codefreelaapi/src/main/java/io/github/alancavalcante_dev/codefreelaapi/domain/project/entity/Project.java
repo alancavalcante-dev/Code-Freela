@@ -66,19 +66,19 @@ public class Project {
 
         if (priceDay != null) {
             prices.put("p / Dia", priceDay);
+            return prices;
         }
 
         if (priceHour != null) {
             prices.put("p / Hora", priceHour);
+            return prices;
         }
 
         if (priceProject != null) {
             prices.put("p / Projeto", priceProject);
+            return prices;
         }
 
-        if (prices.isEmpty()) {
-            throw new RuntimeException("Nenhum preço em Preços do projeto");
-        }
-        return prices;
+        throw new RuntimeException("Nenhum preço em Preços do projeto");
     }
 }

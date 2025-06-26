@@ -123,38 +123,44 @@ docker-compose up -d --build
 
 ```
 codefreela/
-├── codefreelaapi/       # Backend (Spring Boot)
+├── codefreelaapi/                        
 │   └── src/main/java/io/github/alancavalcante_dev/codefreelaapi/
-│       ├── commom/
-│       │   └── validate, Error, GlobalExceptionHandler
-│       ├── config/
-│       ├── domain/
-│       │   ├── appointment/
-│       │   ├── container/
-│       │   ├── entity/
-│       │   ├── generatedcommentia/
-│       │   │   ├── ArtificialIntelligencePrompt.java
-│       │   │   └── GeneratorCommentIA.java
-│       │   ├── gitea/
-│       │   ├── notification/
-│       │   ├── portfolio/
-│       │   ├── profile/
-│       │   ├── project/
-│       │   └── projectbusiness/
-│       ├── exceptions/
-│       ├── infrastructure/
-│       │   ├── repository/
-│       │   └── security/
-│       ├── mapper/
-│       └── presentation/
-│           ├── controller/
-│           └── dto/
-│       └── CodefreelaapiApplication.java
-├── frontend/            # Frontend (React - comentado)
-├── gitea/               # Dados persistentes do Gitea
-├── .env                 # Arquivo de variáveis de ambiente
-├── docker-compose.yml   # Coordenação dos containers
-└── README.md            # Documentação do projeto
+│       ├── commom/                        # Utilitários e validações comuns
+│       │   ├── globalexception/           # Handler de exceções globais
+│       │   ├── notification/              # Sistema de notificações de email
+│       │   └── validate/                  # Validadores e regras genéricas
+│       ├── config/                       
+│       ├── domain/                        # Camada de domínio
+│       │   ├── appointment/             
+│       │   ├── container/               
+│       │   ├── entity/                  
+│       │   ├── match/                    
+│       │   ├── portfolio/                 
+│       │   ├── profile/                   
+│       │   └── project/                   
+│       │       ├── controller/            
+│       │       ├── dto/                   
+│       │       ├── entity/                
+│       │       └── service/               
+│       ├── exceptions/                    
+│       ├── infrastructure/                # Integrações e recursos externos
+│       │   ├── artificialintelligence/    # IA: geração de conteúdo, prompts, análises, etc.
+│       │   └── gitea/                     # Integração com a API do Gitea
+│       │       ├── auth/                  
+│       │       ├── client/                # Requisições
+│       │       ├── commit/                # Lógica de manipulação de commits
+│       │       ├── repository/            # Acesso a dados Gitea
+│       │       └── service/               # Regras de negócio Gitea
+│       ├── repository/                    
+│       ├── security/                      # Segurança, autenticação e autorização
+│       ├── mapper/                        # MapStruct / conversores DTO ↔ entidade
+│       └── CodefreelaapiApplication.java  
+├── frontend/                              # Frontend (React.js)
+├── gitea/                                 # Volume de dados persistentes do container Gitea
+├── .env                                   
+├── docker-compose.yml                     # Orquestração dos containers (API, Gitea, DB, Frontend)
+└── README.md                              # Documentação do projeto
+
 ```
 
 ---
