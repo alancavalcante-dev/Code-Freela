@@ -1,19 +1,15 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.container.dto;
 
-import lombok.AllArgsConstructor;
-
 import java.time.LocalDate;
 
 
-@AllArgsConstructor
-public class ContainerDTO {
 
-    String idContainer;
+public record ContainerDTO(
+        String idContainer,
 
-    String title;
+        String title,
 
-    String description;
+        String description,
 
-    LocalDate closingDate;
-
-}
+        LocalDate closingDate
+) {}

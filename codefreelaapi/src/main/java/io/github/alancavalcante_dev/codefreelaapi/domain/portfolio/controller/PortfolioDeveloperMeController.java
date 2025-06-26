@@ -4,6 +4,7 @@ import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity.Portfo
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.service.PortfolioDeveloperService;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.dto.PortfolioDeveloperDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/developer/portfolio/me")
+@Tag(name="Portfólio do próprio desenvolvedor")
 public class PortfolioDeveloperMeController {
 
     private final PortfolioDeveloperService service;

@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -58,4 +60,25 @@ public class Project {
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
 
+
+    public Map<String, BigDecimal> getPriceExists() {
+        Map<String, BigDecimal> prices = new HashMap<>();
+
+        if (priceDay != null) {
+            prices.put("p / Dia", priceDay);
+        }
+
+        if (priceHour != null) {
+            prices.put("p / Hora", priceHour);
+        }
+
+        if (priceProject != null) {
+            prices.put("p / Projeto", priceProject);
+        }
+
+        if (prices.isEmpty()) {
+            throw new RuntimeException("Nenhum preço em Preços do projeto");
+        }
+        return prices;
+    }
 }

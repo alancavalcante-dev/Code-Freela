@@ -1,7 +1,15 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.container.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.dto.AppointmentDate;
+import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.service.ContainerService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.entity.Container;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
+import io.github.alancavalcante_dev.codefreelaapi.domain.match.entity.ProjectBusiness;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.dto.ProfileDataSimpleDTO;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
+import io.github.alancavalcante_dev.codefreelaapi.domain.profile.service.ProfileService;
+import io.github.alancavalcante_dev.codefreelaapi.domain.project.entity.Project;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.dto.ContainerDTO;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.dto.ContainerDetailsDTO;
@@ -28,6 +36,7 @@ public class ContainerController {
 
 
     private final ContainerService service;
+    private final ProfileService profileService;
     private final UserLogged logged;
 
 
@@ -64,13 +73,38 @@ public class ContainerController {
         }
 
         Container container = containerOpt.get();
+
+        List<AppointmentDate> appointmentList = container.getAppointments()
+                .stream().map(a -> new AppointmentDate(a.getDateStarting(), a.getDateClosing())).toList();
+
+        ProjectBusiness match = container.getProjectBusiness();
+        Project project = match.getProject();
+
+        User client = project.getUser();
+        User developer = match.getUserDeveloper();
+
+        ProfileDataSimpleDTO profileClient = profileService.getProfileByIdUser(client)
+                .map(c -> new ProfileDataSimpleDTO(c.getName(), c.getEmail(), c.getDateCreated()))
+                .orElseThrow();
+
+        ProfileDataSimpleDTO profileDeveloper = profileService.getProfileByIdUser(developer)
+                .map(c -> new ProfileDataSimpleDTO(c.getName(), c.getEmail(), c.getDateCreated()))
+                .orElseThrow();
+
         ContainerDetailsDTO containerDetails = new ContainerDetailsDTO(
                 container.getIdContainer().toString(),
-                container.getProjectBusiness().getProject().getTitle(),
-                container.getProjectBusiness().getProject().getDescription(),
-                container.getProjectBusiness().getProject().getStateBusiness(),
+                project.getTitle(),
+                project.getDescription(),
+                project.getStateBusiness(),
+                project.getPriceExists(),
+                project.getClosingDate(),
+
                 container.getDateCreated(),
-                container.getStateProject()
+                container.getStateProject(),
+                appointmentList,
+
+                profileClient,
+                profileDeveloper
         );
 
         return ResponseEntity.ok(containerDetails);

@@ -3,6 +3,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.controller;
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity.PortfolioDeveloper;
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.service.PortfolioDeveloperService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.dto.PortfolioDeveloperDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/portfolio/developer")
+@Tag(name="Consulta de desenvolvedores")
 public class PortfolioDeveloperController {
 
 

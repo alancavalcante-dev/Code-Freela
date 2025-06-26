@@ -7,6 +7,7 @@ import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.dto.Lo
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.dto.RegisterDTO;
 import io.github.alancavalcante_dev.codefreelaapi.exceptions.UsernameDuplicadoExeption;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.repository.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="Autenticação")
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
