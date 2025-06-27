@@ -1,10 +1,13 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.appointment.controller;
 
+import io.github.alancavalcante_dev.codefreelaapi.commom.notification.NotificationEmailSender;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.service.ContainerService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.service.AppointmentService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
+import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
+import io.github.alancavalcante_dev.codefreelaapi.infrastructure.artificialintelligence.GeneratorCommentIA;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.dto.InsertAppointmentRequest;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.dto.UpdateCommentRequest;
@@ -12,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +37,8 @@ public class AppointmentDeveloperController {
 
     private final ContainerService containerService;
     private final AppointmentService appointmentService;
+    private final NotificationEmailSender notification;
+    private final GeneratorCommentIA generatorCommentIA;
     private final UserLogged logged;
 
 
@@ -60,9 +66,13 @@ public class AppointmentDeveloperController {
     @PreAuthorize("hasRole('DEVELOPER')")
     @Operation(summary = "Registra uma marcação no projeto selecionado")
     @Transactional
-    public ResponseEntity<Appointment> postAppointment(@PathVariable("id") String idProject, @RequestBody InsertAppointmentRequest dto) {
-
-        List<Container> containersProjectByUser = containerService.getContainersByUserDeveloper(logged.load())
+    public ResponseEntity<Appointment> postAppointment(
+            @PathVariable("id") String idProject,
+            @RequestBody InsertAppointmentRequest dto,
+            @PathParam("withCommentIA") boolean withCommentIA
+    ) {
+        User user = logged.load();
+        List<Container> containersProjectByUser = containerService.getContainersByUserDeveloper(user)
                 .stream()
                 .filter(c -> c.getProjectBusiness().getProject().getIdProject().equals(UUID.fromString(idProject)))
                 .toList();
@@ -83,6 +93,10 @@ public class AppointmentDeveloperController {
 
         Appointment workSaved = appointmentService.saveWorkSession(appointment);
         log.info("Marcação salva");
+
+        if (withCommentIA) {
+            generatorComment(appointment, user.getProfile().getEmail());
+        }
 
         return ResponseEntity.ok(workSaved);
     }
@@ -127,5 +141,32 @@ public class AppointmentDeveloperController {
 
         return ResponseEntity.ok(updated);
     }
+
+
+    public void generatorComment(Appointment appointment, String email) {
+        generatorCommentIA.generate(appointment)
+                .thenApply(comment -> {
+                    appointment.setCommentsGeneratedIA(comment);
+                    return appointmentService.saveWorkSession(appointment);
+                })
+                .thenAccept(savedAppointment -> {
+                    senderEmailComments(email); // passe o appointment
+                })
+                .exceptionally(ex -> {
+                    log.error("Erro ao gerar comentário IA e/ou enviar email", ex);
+                    return null;
+                });
+    }
+
+
+    public void senderEmailComments(String email) {
+        String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para visualizar: (link)";
+
+        notification.send(email, "Arara Fly - Comentário da IA gerada", htmlText);
+        log.info("E-mail enviado do comentário por IA gerada");
+    }
+
+
+
 
 }

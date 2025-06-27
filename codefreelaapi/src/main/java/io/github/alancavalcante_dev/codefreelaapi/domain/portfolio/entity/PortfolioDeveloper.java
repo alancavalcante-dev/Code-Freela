@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity;
 
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Language;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Environment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.User;
 import io.github.alancavalcante_dev.codefreelaapi.domain.profile.entity.Profile;
 import jakarta.persistence.*;
@@ -33,7 +33,7 @@ public class PortfolioDeveloper {
             joinColumns = @JoinColumn(name = "id_developer"),
             inverseJoinColumns = @JoinColumn(name = "id_language")
     )
-    private List<Language> languages;
+    private List<Environment> environments;
 
     @OneToOne
     @JoinColumn(name = "id_user")

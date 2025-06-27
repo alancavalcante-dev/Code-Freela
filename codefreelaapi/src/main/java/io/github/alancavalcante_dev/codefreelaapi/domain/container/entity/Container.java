@@ -3,6 +3,7 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.container.entity;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.match.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Deploy;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +49,10 @@ public class Container {
     @Column(name = "state")
     private StateProject stateProject;
 
-    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "id_deploy", nullable = true)
+    private Deploy deploy;
 }

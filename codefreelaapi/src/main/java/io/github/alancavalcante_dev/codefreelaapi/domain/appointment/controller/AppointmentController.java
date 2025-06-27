@@ -38,8 +38,8 @@ public class AppointmentController {
 
     private final ContainerService containerService;
     private final AppointmentService appointmentService;
-    private final GeneratorCommentIA generatorCommentIA;
     private final NotificationEmailSender notification;
+    private final GeneratorCommentIA generatorCommentIA;
     private final UserLogged logged;
 
     @GetMapping("{id}/appointment")
@@ -90,14 +90,14 @@ public class AppointmentController {
 
         Appointment appointment = appointmentDetails.getFirst();
         if (withCommentIA && appointment.getCommentsGeneratedIA() == null) {
-            this.generatorCommentIA(appointment, user.getProfile().getEmail());
+            generatorComment(appointment, user.getProfile().getEmail());
         }
 
         return ResponseEntity.ok(appointment);
     }
 
 
-    public void generatorCommentIA(Appointment appointment, String email) {
+    public void generatorComment(Appointment appointment, String email) {
         generatorCommentIA.generate(appointment)
                 .thenApply(comment -> {
                     appointment.setCommentsGeneratedIA(comment);
@@ -116,8 +116,10 @@ public class AppointmentController {
     public void senderEmailComments(String email) {
         String htmlText = "Comentário da IA gerada<br><br>Clique no link ao lado para visualizar: (link)";
 
-        notification.send(email, "CodeFreela - Comentário da IA gerada", htmlText);
+        notification.send(email, "Arara Fly - Comentário da IA gerada", htmlText);
         log.info("E-mail enviado do comentário por IA gerada");
     }
+
+
 
 }

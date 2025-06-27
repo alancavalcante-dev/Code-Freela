@@ -1,7 +1,7 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.controller;
 
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Language;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Environment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.entity.PortfolioDeveloper;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,7 +21,7 @@ public class PortfolioDeveloperSpecification {
     public static Specification<PortfolioDeveloper> hasLanguage(String language) {
         return (root, query, cb) -> {
             if (language == null) return null;
-            Join<PortfolioDeveloper, Language> joinLang = root.join("languages");
+            Join<PortfolioDeveloper, Environment> joinLang = root.join("languages");
             return cb.equal(cb.lower(joinLang.get("name")), language.toLowerCase());
         };
     }

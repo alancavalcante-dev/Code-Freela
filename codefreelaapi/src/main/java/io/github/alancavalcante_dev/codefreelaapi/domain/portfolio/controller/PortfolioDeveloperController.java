@@ -37,7 +37,7 @@ public class PortfolioDeveloperController {
         dto.setEmail(port.getProfile().getEmail());
         dto.setPresentation(port.getPresentation());
         dto.setResume(port.getResume());
-        dto.setLanguages(port.getLanguages());
+        dto.setEnvironments(port.getEnvironments());
 
         return ResponseEntity.ok(dto);
     }
@@ -59,7 +59,7 @@ public class PortfolioDeveloperController {
                     dto.setEmail(d.getProfile().getEmail());
                     dto.setPresentation(d.getPresentation());
                     dto.setResume(d.getResume());
-                    dto.setLanguages(d.getLanguages());
+                    dto.setEnvironments(d.getEnvironments());
                     return dto;
                 }).toList();
 

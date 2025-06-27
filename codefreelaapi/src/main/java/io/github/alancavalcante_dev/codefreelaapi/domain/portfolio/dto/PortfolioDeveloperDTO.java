@@ -1,6 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.portfolio.dto;
 
-import io.github.alancavalcante_dev.codefreelaapi.domain.entity.Language;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Environment;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +39,6 @@ public class PortfolioDeveloperDTO {
 
     @NotBlank
     @NotNull
-    List<Language> languages;
+    List<Environment> environments;
 
 }
