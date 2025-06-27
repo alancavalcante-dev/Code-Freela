@@ -1,5 +1,6 @@
 package io.github.alancavalcante_dev.codefreelaapi.domain.container.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.alancavalcante_dev.codefreelaapi.domain.appointment.entity.Appointment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.match.entity.ProjectBusiness;
 import io.github.alancavalcante_dev.codefreelaapi.domain.entity.enums.StateProject;
@@ -52,7 +53,7 @@ public class Container {
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "id_deploy", nullable = true)
-    private Deploy deploy;
+    @JsonIgnore
+    @OneToMany(mappedBy = "container", fetch = FetchType.EAGER)
+    private List<Deploy> deploy;
 }
