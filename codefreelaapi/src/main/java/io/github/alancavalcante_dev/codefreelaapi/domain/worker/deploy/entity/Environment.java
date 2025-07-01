@@ -17,8 +17,11 @@ public class Environment {
     @JsonIgnore
     private UUID idEnvironment;
 
-    @Column(nullable = false, length = 50, unique = true)
-    private String variable;
+    @Column(length = 50)
+    private String key;
+
+    @Column(length = 50)
+    private String value;
 
     @ManyToOne
     @JoinColumn(name = "id_deploy")

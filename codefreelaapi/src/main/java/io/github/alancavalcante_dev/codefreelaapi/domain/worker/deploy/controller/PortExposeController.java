@@ -2,8 +2,10 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.controll
 
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.entity.Container;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.service.ContainerService;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Deploy;
 import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.Environment;
 import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity.PortExpose;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.service.DeployService;
 import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.service.PortExposeService;
 import io.github.alancavalcante_dev.codefreelaapi.infrastructure.security.UserLogged;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,10 +30,11 @@ public class PortExposeController {
 
     private final PortExposeService portExposeService;
     private final ContainerService containerService;
+    private final DeployService deployService;
     private final UserLogged logged;
 
     @PreAuthorize("hasRole('DEVELOPER')")
-    @PostMapping("{idContainer}/worker/deploy-service/{nameDeploy}/port-expose")
+    @GetMapping("{idContainer}/worker/deploy-service/{nameDeploy}/port-expose")
     public ResponseEntity<List<PortExpose>> getAllPorts(@PathVariable("idContainer") String id, @PathVariable String nameDeploy) {
         Optional<Container> container = containerService.getContainerById(logged.load().getId(), UUID.fromString(id));
 
@@ -45,6 +48,34 @@ public class PortExposeController {
         }
 
         return ResponseEntity.ok(portExposes);
+    }
+
+    @PreAuthorize("hasRole('DEVELOPER')")
+    @PostMapping("{idContainer}/worker/deploy-service/{nameDeploy}/port-expose")
+    public ResponseEntity<PortExpose> postAllPorts(
+            @PathVariable("idContainer") String id,
+            @PathVariable String nameDeploy,
+            @RequestBody PortExpose data
+    ) {
+        Optional<Container> container = containerService.getContainerById(logged.load().getId(), UUID.fromString(id));
+
+        if (container.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<PortExpose> portExposes = portExposeService.getBySurnameServiceAndContainer(container.get(), nameDeploy);
+        if (portExposes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        Optional<Deploy> deploy = deployService.getDeploy(container.get());
+        if (deploy.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        data.setDeploy(deploy.get());
+        PortExpose saved = portExposeService.save(data);
+        return ResponseEntity.ok(saved);
     }
 
     @PreAuthorize("hasRole('DEVELOPER')")
