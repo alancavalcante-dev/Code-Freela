@@ -13,7 +13,10 @@ import java.util.UUID;
 @Repository
 public interface PortExposeRepository extends JpaRepository<PortExpose, UUID> {
 
-    @Query("select p from PortExpose p where p.deploy.surnameService = :nameDeploy and p.deploy.container.idContainer = :idContainer")
+    @Query("SELECT p FROM PortExpose p " +
+            "JOIN FETCH p.deploy d " +        // Traz o Deploy junto com a PortExpose
+            "JOIN d.container c " +           // Faz o join normal para a cláusula WHERE
+            "WHERE d.surnameService = :nameDeploy AND c.idContainer = :idContainer")
     List<PortExpose> getBySurnameServiceAndIdContainer(String nameDeploy, UUID idContainer);
 
 }

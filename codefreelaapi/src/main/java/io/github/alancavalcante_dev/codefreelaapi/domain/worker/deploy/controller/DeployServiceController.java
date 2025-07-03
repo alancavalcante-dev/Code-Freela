@@ -58,6 +58,7 @@ public class DeployServiceController {
         }
 
         data.setContainer(container.get());
+        data.setIsUp(false);
         Deploy deploy = deployService.save(data);
         return ResponseEntity.ok(deploy);
     }
@@ -78,25 +79,17 @@ public class DeployServiceController {
         }
 
         Deploy deploy = deployOpt.get();
+
         deploy.setSurnameService(data.getSurnameService());
-        deploy.setService(data.getService());
+        deploy.setTypeService(data.getTypeService());
         deploy.setLanguage(data.getLanguage());
         deploy.setEntrypoint(data.getEntrypoint());
 
-        Deploy deploySaved = deployService.save(data);
+        Deploy deploySaved = deployService.save(deploy);
+
         return ResponseEntity.ok(deploySaved);
     }
 
-    // POST
-    // ControllerEnvironments e ControllerPorts
-    // Para cadastrar tem que citar o nome do Deploy
-
-    // Who -> Deploy
-    // Cada deploy terá ambiente e portas
-
-    // Um Container pode ter muitos Deploys
-    // Um Deploy pode ter muitos environments e ports
-    // environments e ports pode ter só um Deploy
-
 
 }
+                                                                       

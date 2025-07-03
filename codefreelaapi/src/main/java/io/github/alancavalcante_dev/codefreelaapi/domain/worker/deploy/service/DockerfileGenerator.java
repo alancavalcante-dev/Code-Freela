@@ -14,8 +14,8 @@ public class DockerfileGenerator {
 
 
     public String generateDockerfile(Deploy deploy, String giteaHost, String repoOwner, String repoName) {
-        Language language = Language.valueOf(deploy.getLanguage().toUpperCase());
-        String languageVersion = deploy.getLanguage();
+        Language language = deploy.getLanguage();
+        String languageVersion = deploy.getLanguageVersion();
 
         return switch (language) {
             case JAVA -> generateJavaDockerfile(languageVersion, giteaHost, repoOwner, repoName, deploy);
@@ -24,8 +24,18 @@ public class DockerfileGenerator {
             case REACT, VUE_JS -> generateSpaFrontendDockerfile(languageVersion, giteaHost, repoOwner, repoName, deploy);
             case NEXT_JS -> generateNextJsDockerfile(languageVersion, giteaHost, repoOwner, repoName, deploy);
             case STATIC -> generateStaticSiteDockerfile(giteaHost, repoOwner, repoName);
+            case JAVASCRIPT -> generateStaticSiteDockerfile(giteaHost, repoOwner, repoName);
             default -> throw new IllegalArgumentException("Linguagem não suportada: " + language);
         };
+    }
+
+    public String generateSimpleTestDockerfile() {
+        StringJoiner dockerfile = new StringJoiner("\n");
+        dockerfile.add("FROM nginx:stable-alpine");
+        dockerfile.add("RUN echo '<h1>Build de teste funcionou!</h1>' > /usr/share/nginx/html/index.html");
+        dockerfile.add("EXPOSE 80");
+        dockerfile.add("CMD [\"nginx\", \"-g\", \"daemon off;\"]");
+        return dockerfile.toString();
     }
 
 
@@ -139,13 +149,31 @@ public class DockerfileGenerator {
 
     private String generateStaticSiteDockerfile(String giteaHost, String repoOwner, String repoName) {
         StringJoiner dockerfile = new StringJoiner("\n");
-        dockerfile.add("FROM nginx:stable-alpine");
+
+        // --- Estágio 1: O "Clonador" ---
+        // Usa uma imagem base leve do Alpine com Git apenas para clonar o repositório.
+        dockerfile.add("FROM alpine/git:latest AS cloner");
+        dockerfile.add("");
         dockerfile.add("ARG GITEA_TOKEN");
-        dockerfile.add("RUN apk add --no-cache git");
-        dockerfile.add("WORKDIR /usr/share/nginx/html");
-        dockerfile.add(String.format("RUN git clone https://oauth2:${GITEA_TOKEN}@%s/%s/%s.git .", giteaHost, repoOwner, repoName));
+        dockerfile.add("");
+        dockerfile.add("ARG CACHE_BUSTER");
+        dockerfile.add("");
+        dockerfile.add("WORKDIR /app");
+        dockerfile.add("");
+        dockerfile.add("RUN echo \"Busting cache with ${CACHE_BUSTER}\"");
+        dockerfile.add("");
+        dockerfile.add(String.format("RUN git clone http://oauth2:${GITEA_TOKEN}@%s/%s/%s.git .", giteaHost, repoOwner, repoName));
+        dockerfile.add("");
+
+        // --- Estágio 2: O Servidor Nginx Final ---
+        // Começamos do zero com uma imagem limpa do Nginx.
+        dockerfile.add("FROM nginx:stable-alpine");
+        dockerfile.add("");
+        dockerfile.add("COPY --from=cloner /app /usr/share/nginx/html");
+        dockerfile.add("");
         dockerfile.add("EXPOSE 80");
         dockerfile.add("CMD [\"nginx\", \"-g\", \"daemon off;\"]");
+
         return dockerfile.toString();
     }
 

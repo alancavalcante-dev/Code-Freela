@@ -2,11 +2,13 @@ package io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.alancavalcante_dev.codefreelaapi.domain.container.entity.Container;
+import io.github.alancavalcante_dev.codefreelaapi.domain.worker.deploy.service.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name="tbl_deploy")
 public class Deploy {
 
@@ -23,22 +26,20 @@ public class Deploy {
     @JsonIgnore
     private UUID idDeploy;
 
-    @NotNull
-    @NotBlank
-    @Column(name = "surname_service")
+    @Column(name = "surname_service", length = 100)
     private String surnameService;
 
-    @NotNull
-    @NotBlank
-    private TypeService service;
+    @Column(length = 100)
+    @Enumerated(EnumType.STRING)
+    private TypeService typeService;
 
-    @NotNull
-    @NotBlank
-    @Column(nullable = false, length = 50)
-    private String language;
+    @Column(length = 100)
+    @Enumerated(EnumType.STRING)
+    private Language language;
 
-    @NotNull
-    @NotBlank
+    @Column(length = 100)
+    private String languageVersion;
+
     @Column(length = 200)
     private String entrypoint;
 
@@ -51,7 +52,11 @@ public class Deploy {
     private List<Environment> variableEnvironments;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @Column(name = "is_up")
+    private Boolean isUp;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_container", nullable = false)
     private Container container;
 

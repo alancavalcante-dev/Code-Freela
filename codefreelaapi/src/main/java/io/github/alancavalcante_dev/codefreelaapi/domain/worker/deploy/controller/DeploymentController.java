@@ -65,6 +65,9 @@ public class DeploymentController {
         }
 
         Map<String, String> process = deployment.stop(deploy.get());
+        if (process.get("status").equals("error")) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(process);
     }
 

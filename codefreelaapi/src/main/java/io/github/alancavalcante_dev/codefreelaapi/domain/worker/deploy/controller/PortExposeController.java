@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,16 +61,19 @@ public class PortExposeController {
         Optional<Container> container = containerService.getContainerById(logged.load().getId(), UUID.fromString(id));
 
         if (container.isEmpty()) {
+            log.info("Container não encontrada");
             return ResponseEntity.notFound().build();
         }
 
         List<PortExpose> portExposes = portExposeService.getBySurnameServiceAndContainer(container.get(), nameDeploy);
         if (portExposes.isEmpty()) {
+            log.info("Service/Porta não encontrada");
             return ResponseEntity.noContent().build();
         }
 
         Optional<Deploy> deploy = deployService.getDeploy(container.get());
         if (deploy.isEmpty()) {
+            log.info("Deploy não encontrada");
             return ResponseEntity.notFound().build();
         }
 

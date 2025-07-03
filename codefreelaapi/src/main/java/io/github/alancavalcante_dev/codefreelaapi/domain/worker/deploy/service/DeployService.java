@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -17,12 +19,22 @@ public class DeployService {
     private DeployRepository deployRepository;
 
     public Optional<Deploy> getDeploy(Container container) {
-        return deployRepository.findByContainer(container);
+        return deployRepository.getByContainer(container);
     }
+
+    public Optional<Deploy> getDeployById(UUID id) {
+        return deployRepository.findById(id);
+    }
+
 
     public Deploy save(Deploy deploy) {
         return deployRepository.save(deploy);
     }
+
+    public List<Deploy> findBySurnameServiceAndContainer(String surnameService, Container container) {
+        return deployRepository.findBySurnameServiceAndContainer(surnameService, container);
+    }
+
 
 
 
