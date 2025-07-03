@@ -1,0 +1,56 @@
+spring:
+
+  threads:
+    enabled: true
+
+  config:
+    import:
+      - optional:file:.env.api.dev
+
+  application:
+    name: codefreelaapi
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  datasource:
+    url: jdbc:postgresql://${URL_BD}/${DATABASE}
+    username: ${USERNAME_BD}
+    password: ${PASSWORD_BD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${USERNAME_EMAIL_SENDER}
+    password: ${PASSWORD_EMAIL_SENDER}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+springdoc:
+  override-with-generic-response: false
+
+jwt:
+  secret: ${JWT_SECRET}
+

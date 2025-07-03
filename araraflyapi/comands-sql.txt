@@ -1,0 +1,9 @@
+# Cadastrar User
+insert into tbl_user(id_user, email, is_active, password, roles, username) values
+('3ce0ce56-f1a0-4668-869f-9cdd81a2e116', 'admin@example.com', true,
+'$2a$10$tefbZZ6KbhcvFlH5Z0SsI.oTmBHl5SNrRk2UnO7c7SVb0odELXH3O', '{ADMIN}', 'admin');
+
+
+# Cadastrar Client
+insert into tbl_client (id, client_id, client_secret, redirect_uri, scope) values
+('fc8ac389-7f3e-419c-ab8a-ae60b016b5a4', 'meu-client', 'secret-client', 'http://codefreela-api:8080/authorized', 'GERENTE');
